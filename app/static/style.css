@@ -1,0 +1,175 @@
+html, body {
+    height: 100%;
+}
+
+.container {
+    height: 100%
+}
+
+#navbar-cust {
+    border-right: none;
+    border-left: none;
+    border-top: none;
+    border-bottom: solid;
+    border-radius: 0px;
+    border-color: black;
+    border-width: 3px;
+}
+
+#nav-item {
+    color: black;
+    font-weight: 600;
+}
+
+#nav-item:hover {
+    color: pink;
+}
+
+.message-box-old {
+    background-color: rgba(200,200,200,0.1);
+    border-color: rgba(200,200,200,0.3);
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 8px 5px #eee;
+    height: 500px;
+    overflow: scroll;
+}
+
+.message-box {
+    background-color: rgba(200,200,200,0.1);
+    border-color: black;
+    border-style: solid;
+    border-width: 3px;
+    box-shadow: 0px 0px 8px 5px #eee;
+    height: 600px;
+    overflow: scroll;
+    margin-top: 75px;
+}
+
+.text-bubble-left  {
+    display: inline-block;
+    border-radius: 8px;
+    background-color: #D5F5F0;
+    text-align: left;
+    padding: .2em .5em .2em .5em;
+}
+
+.text-bubble-right {
+    display: inline-block;
+    border-radius: 8px;
+    background-color:#CAEEF9;
+    text-align:right;
+    right:25px;
+    position: absolute;
+    padding: .2em .5em .2em .5em;
+}
+
+.user-list {
+    color: black;
+}
+
+.user-list:hover {
+    color: black;
+    text-decoration: none;
+}
+
+.list-item-box {
+    border-style: solid;
+    border-color: black;
+    border-width: 3px;
+    border-radius: 0px;
+}
+
+.list-item-box:hover {
+    box-shadow: 6px 6px 0px 0px pink;
+}
+
+.btn-cust {
+    padding: 5px 8px;
+    background-color: white;
+    font-weight: 600;
+}
+
+.bio-box {
+    text-align: right;
+}
+
+.bio-box:hover {
+    box-shadow: none;
+}
+
+.text-input {
+    border-style: solid;
+    border-color: black;
+    border-width: 3px;
+    width: 84%;
+    height: 40px;
+    margin-top:10px;
+    margin-right: 0;
+}
+
+.text-input-btn {
+    border-style: solid;
+    border-color: black;
+    border-width: 3px;
+    width: 15%;
+    height: 40px;
+    margin: 0 0 0 0;
+}
+
+.text-input-btn:hover {
+    box-shadow: 6px 6px 0px 0px pink;
+}
+
+.profile-img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border-style: solid;
+    border-width: 3px;
+    margin: 30px 0 20px 0;;
+}
+
+.cropped-img {
+    width: 200px; /* width of container */
+    height: 200px; /* height of container */
+    object-fit: cover;
+    margin: 2px;
+    border-radius: 15px;
+    box-shadow: 0px 0px 5px 3px #eee;
+}
+
+.inline-block {
+    display: inline-block;
+}
+
+.float-img-right  {
+    float: right;
+}
+
+.img-scroll {
+    overflow: auto;
+    white-space: nowrap;
+}
+
+.username:hover {
+    color: pink;
+}
+
+.bio-par {
+    margin-bottom: 40px;
+}
+
+.bio-title {
+    background-color: #eee;
+    padding: .3em .5em .3em .5em;
+    border-radius: 5px;
+}
+
+.user-info {
+    padding: 20px;
+    height: 200px;
+    width: 60%
+    margin-top: 20px
+}

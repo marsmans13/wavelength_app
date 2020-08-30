@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Profile{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-sm">
+            <h2>{{ user.username }}, {{ user.age }}</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+          <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="false" style="width:400px">
+            <!-- Indicators -->
+            <ol class="carousel-indicators">
+              <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+              <li data-target="#myCarousel" data-slide-to="1"></li>
+              <li data-target="#myCarousel" data-slide-to="2"></li>
+                <li data-target="#myCarousel" data-slide-to="3"></li>
+            </ol>
+
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner">
+              <div class="item active">
+                <img src="/static/IMG_0792.jpeg " alt="Los Angeles" style="width:400px;">
+              </div>
+
+              <div class="item">
+                <img src="/static/59441072255__78D9AAE7-9B2F-4F0D-AB5E-8EDAF4D79ED2.jpg" alt="Chicago" style="width:400px;">
+              </div>
+
+              <div class="item">
+                <img src="/static/IMG_0847.jpeg" alt="New york" style="width:400px;">
+              </div>
+
+                <div class="item">
+                <img src="/static/IMG_1453.jpeg" alt="New york" style="width:400px;">
+              </div>
+            </div>
+
+            <!-- Left and right controls -->
+            <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+              <span class="glyphicon glyphicon-chevron-left"></span>
+              <span class="sr-only">Previous</span>
+            </a>
+            <a class="right carousel-control" href="#myCarousel" data-slide="next">
+              <span class="glyphicon glyphicon-chevron-right"></span>
+              <span class="sr-only">Next</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="col-sm-3 list-item-box bio-box">
+            <div style="margin:10px 10px 20px 10px">
+                <div>
+                    <h3>Bio</h3>
+                    <p>{{ user.bio }}</p>
+                </div>
+                <div>
+                    <h3>Interests</h3>
+                    <p>{{ user.interests }}</p>
+                </div>
+                <div>
+                    <h3>Dislikes</h3>
+                    <p>{{ user.pet_peeves }}</p>
+                </div>
+                <div>
+                    <h3>Location</h3>
+                    <p>{{ location.place_name }}, {{ location.state_name }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm">
+            <form action="{{ url_for('profile_bp.upload_image') }}" method="post" enctype=multipart/form-data>
+              <label for="img">Add image:</label>
+              <input type="file" id="img" name="img" accept="image/*">
+              <input class="btn btn-outline-secondary" type="submit" value="Upload">
+            </form>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <button class="btn-cust list-item-box user-list" onclick="myFunction()">Update Info</button>
+    </div>
+    <br>
+
+    <div id="updateInfo" class="row">
+        <div class="col-sm input-group mb-3">
+          <form action="{{ url_for('profile_bp.home') }}" method="post">
+              <label for="age">Age</label>
+              <input class="form-control" name="age" id="age">
+              <br/>
+              <label for="gender">Gender</label>
+              <select class="form-control" id="gender" name="gender">
+                <option value="women">Woman</option>
+                <option value="men">Man</option>
+                <option value="both">Non-Binary</option>
+              </select>
+              <br/>
+              <label for="interested_in">Interested In</label>
+              <select class="form-control" id="interested_in" name="interested_in">
+                <option value="women">Women</option>
+                <option value="men">Men</option>
+                <option value="both">Both</option>
+              </select>
+              <br/>
+              <label for="bio">Bio</label>
+              <input class="form-control" name="bio" id="bio">
+              <br/>
+              <label for="interests">Interests</label>
+              <input class="form-control" name="interests" id="interests">
+              <br/>
+              <label for="pet_peeves">Dislikes</label>
+              <input class="form-control" name="pet_peeves" id="pet_peeves">
+              <br/>
+              <label for="zip">Zip Code</label>
+              <input class="form-control" name="zip" id="zip">
+              <input class="form-control" type="submit" value="Update">
+          </form>
+        </div>
+    </div>
+
+
+<script>
+    window.onload = function() {
+      document.getElementById('updateInfo').style.display = 'none';
+    };
+    function myFunction() {
+      var x = document.getElementById("updateInfo");
+      if (x.style.display === "none") {
+        x.style.display = "block";
+      } else {
+        x.style.display = "none";
+      }
+    }
+</script>
+{% endblock %}

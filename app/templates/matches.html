@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <h3>Matches</h3>
+        {% for match in matches %}
+            <div class="col-sm-3 list-item-box">
+                <a class="user-list" href="{{ url_for('profile_bp.send_message', user_id=match.id) }}">
+                    <h3>{{ match.username }}, {{ match.age }}</h3>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

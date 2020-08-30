@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <h1>{{ user.username }}, {{ user.age }}</h1>
+        <div class="col-sm-3 list-item-box btn-cust">
+            {% if not matched %}
+                <div class="user-list">
+                    <form method="post">
+                        <input type="hidden" id="userID" name="userID" value="{{ user.id }}">
+                        <input type="submit" value="Match">
+                    </form>
+                </div>
+            {% else %}
+                <a class="user-list" href="{{ url_for('profile_bp.send_message', user_id=user.id) }}">
+                    <img src="/static/message.svg" alt="message icon" style="width:30px; margin-right:8px">
+                    send message
+                </a>
+            {% endif %}
+        </div>
+    </div>
+    <br/>
+    <div class="row">
+        <div class="col-lg-12 list-item-box bio-box">
+            <div style="margin:10px 10px 20px 10px">
+                <div class="row">
+                    <h3>Bio</h3>
+                    <p>{{ user.bio }}</p>
+                </div>
+                <div class="row">
+                    <h3>Interests</h3>
+                    <p>{{ user.interests }}</p>
+                </div>
+                <div class="row">
+                    <h3>Dislikes</h3>
+                    <p>{{ user.pet_peeves }}</p>
+                </div>
+                <div class="row">
+                    <h3>Location</h3>
+                    <p>{{ location.place_name }}, {{ location.state_name }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 profile-img">
+              <div class="inline-block">
+                <img class="cropped-img" src="/static/IMG_0792.jpeg " alt="profile photo">
+              </div>
+
+              <div class="inline-block">
+                <img class="cropped-img" src="/static/59441072255__78D9AAE7-9B2F-4F0D-AB5E-8EDAF4D79ED2.jpg" alt="profile photo">
+              </div>
+
+              <div class="inline-block">
+                <img class="cropped-img" src="/static/IMG_0847.jpeg" alt="profile photo">
+              </div>
+
+            <div class="inline-block">
+                <img class="cropped-img" src="/static/IMG_1453.jpeg" alt="profile photo">
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
