@@ -5,17 +5,25 @@
 {% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="container-fluid" style="margin:0 30px;">
     <div class="row">
-        <h2>People Near You</h2>
-        {% for user in users_nearby %}
-            <div class="col-sm-3 list-item-box">
-                <a class="user-list" href="{{ url_for('profile_bp.user_profile', user_id=user.id) }}">
-                <h3>{{ user.username }}, {{ user.age }}</h3>
-                <p>{{ user.bio }}</p>
-                </a>
-            </div>
-        {% endfor %}
+        <div class="col-lg-3">
+            <h2>People Near You</h2>
+        </div>
     </div>
+    <br>
+    {% for user, photo in search_users %}
+    <div class="row">
+        <div class="col-lg-3 list-item-box">
+            <a class="user-list" href="{{ url_for('profile_bp.user_profile', user_id=user.id) }}">
+                <img style="margin:20px 20px 20px 0;" class="inline-block cropped-img" src="{{ photo }}" alt="profile photo">
+                <div class="inline-block">
+                    <h3>{{ user.username }}, {{ user.age }}</h3>
+                    <p>{{ user.bio }}</p>
+                </div>
+            </a>
+        </div>
+    </div>
+    {% endfor %}
 </div>
 {% endblock %}

@@ -18,6 +18,10 @@ def register():
         username = request.form['username']
         password = request.form['password']
         email = request.form['email']
+        age = request.form['age']
+        gender = request.form['gender']
+        if age:
+            age = int(age)
         error = None
         print("form received")
 
@@ -26,12 +30,12 @@ def register():
         elif not password:
             error = 'Password is required'
 
-        user = User.query.filter_by(username=username).first()
+        user = User.query.filter_by(email=email).first()
         if user:
-            error = 'User {} already exists'.format(username)
+            error = 'Email {} already exists'.format(email)
 
         if error is None:
-            user = User(username=username, password=password, email=email)
+            user = User(username=username, password=password, email=email, age=age, gender=gender)
             db.session.add(user)
             db.session.commit()
 

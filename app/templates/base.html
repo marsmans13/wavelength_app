@@ -11,20 +11,19 @@
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
-<body style="background-color: #fff; font-family: 'Helvetica', sans-serif;">
+<body style="background-color: #fff;">
   <nav class="navbar navbar-default" id="navbar-cust" style="background-color: white">
     <div class="container-fluid">
       <a class="navbar-brand" href="{{ url_for('profile_bp.home') }}"><img src="/static/IMG_3606.JPG" alt="wavelength" style="width:175px; margin-top:0"></a>
       <ul class="nav navbar-nav" style="padding-top:15px; padding-bottom:10px; font-size:15px;">
-        <li><a id="nav-item" href="{{ url_for('profile_bp.home') }}">profile</a></li>
+        <li><a id="nav-item" href="{{ url_for('profile_bp.home') }}">home</a></li>
         <li><a id="nav-item" href="{{ url_for('profile_bp.search_users') }}">search</a></li>
         <li><a id="nav-item" href="{{ url_for('profile_bp.show_matches') }}">matches</a></li>
         <li class="navbar-right"><a id="nav-item" href="{{ url_for('auth_bp.logout') }}">log out</a></li>
       </ul>
     </div>
   </nav>
-  <div style="color: green"></div>
-  <div class="container bg-text">
+  <div class="container-fluid bg-text">
     <section class="content">
       <header>
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -37,11 +36,11 @@
     </section>
   </div>
   <div>
-    <p>
+    <p style="font-size: 10px;color:white">
       Icons made by
-      <a class="user-list" href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a>
+      <a style="color:white" href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a>
       from
-      <a class="user-list" href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
+      <a style="color:white" href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
     </p>
   </div>
 </body>

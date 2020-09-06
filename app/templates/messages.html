@@ -4,22 +4,40 @@
 {% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="row">
+<div class="container-fluid">
+    <div class="row-fluid">
         <div class="col-lg-6">
-            <div class="message-box">
+            <div class="message-box-old">
+                <div>
+                    <p class="text-bubble-center" style="text-align:center;">
+                        Congrats, you and {{ profile.username }} have matched! Here's an ice breaker for you:
+                        <br>
+                        What is your favorite topic to read about?
+                    </p>
+                </div>
                 {% for message in messages %}
                 <div style="padding:10px;">
                     {% if message.sender == profile.id %}
-                        <p style="color:#888; font-size:10px; text-align:left;">
-                            {{ message.timestamp.time().strftime('%H:%M') }}
-                        </p>
-                        <p class="text-bubble-left">{{ message.text }}</p>
+                        <div class="row" style="margin-left:10px">
+                            <p style="color:#888; font-size:10px; text-align:left;">
+                                {{ message.timestamp.time().strftime('%H:%M') }}
+                            </p>
+                            <div>
+                                <img src="{{ match_photo }}" class="message-box-img inline-block" alt="profile">
+                                <p class="text-bubble-left">{{ message.text }}</p>
+                            </div>
+                        </div>
                     {% else %}
-                        <p style="color:#888; font-size:10px; text-align:right">
-                            {{ message.timestamp.time().strftime('%H:%M') }}
-                        </p>
-                        <p class="text-bubble-right">{{ message.text }}</p>
+                        <div class="row" style="margin-right:10px">
+                            <p style="color:#888; font-size:10px; text-align:right">
+                                {{ message.timestamp.time().strftime('%H:%M') }}
+                            </p>
+                            <div class="inline-block" style="float:right;">
+                                <p class="text-bubble-right">{{ message.text }}</p>
+
+                                <img src="{{ user_photo }}" class="message-box-img" alt="profile">
+                            </div>
+                        </div>
                     {% endif %}
                 </div>
                 {% endfor %}
@@ -30,22 +48,32 @@
             </form>
         </div>
 
-        <div class="col-lg-6" style="margin-top:50px">
-            <h1>
-                <a class="user-list username" href="{{ url_for('profile_bp.user_profile', user_id=profile.id) }}">
-                    {{ profile.username }}, {{ profile.age }}
-                </a>
-            </h1>
+        <div class="col-lg-6" style="margin-top:0px; padding-left:50px">
+            <h1>{{ profile.username }}</h1>
             <div style="display:flex; align-items: center; margin-top:30px">
-                <img class="inline-block cropped-img" src="/static/IMG_0792.jpeg " alt="profile photo" style="border-radius:100%">
-                <div class="inline-block list-item-box user-info" style="height:200px; width:60%; margin-left:10px">
-                    <p style="margin-bottom:15px"><img src="/static/work.svg" alt="job icon" style="width:20px; margin-right:10px">student</p>
-                    <p style="margin-bottom:15px"><img src="/static/eye.svg" alt="job icon" style="width:20px; margin-right:10px">friends</p>
-                </div>
+                {% for photo in profile_photos %}
+                    <img class="inline-block cropped-img" src="{{ photo }}"
+                         alt="profile photo" style="border-radius:20px; margin-right:20px">
+                {% endfor %}
+            </div>
+            <div style="display:block; margin-top:15px; margin-bottom:0;">
+                <p class="inline-block" style="border-right: 1px solid #ccc; padding: 5px 25px 0 25px;">{{ profile.age }}</p>
+                <p class="inline-block" style="border-right: 1px solid #ccc; padding: 5px 25px 0 25px;">
+                    <img src="/static/pin.svg" alt="pin icon" style="width:20px; margin-right:10px">
+                    {{ location.place_name }}, {{ location.state_name }}
+                </p>
+                <p class="inline-block" style="border-right: 1px solid #ccc; padding: 5px 25px 0 25px;">
+                    <img src="/static/work.svg" alt="job icon" style="width:20px; margin-right:10px">student
+                </p>
+                <p class="inline-block" style="border-right: 1px solid #ccc; padding: 5px 25px 0 25px;">
+                    <img src="/static/eye.svg" alt="eye icon" style="width:20px; margin-right:10px">friends
+                </p>
+                <hr style="margin-top:5px; color: #ccc">
             </div>
 
+
             <div class="bio-box" style="margin:30px 10px 20px 10px;">
-                <div class="inline-block" style="float:left; text-align:left">
+                <div class="inline-block" style="float:left; text-align:left; width: 250px;">
                     <h3 class="bio-title">Bio</h3>
                     <p class="bio-par">{{ profile.bio }}</p>
 
@@ -53,7 +81,7 @@
                     <p class="bio-par">{{ location.place_name }}, {{ location.state_name }}</p>
                 </div>
 
-                <div class="inline-block">
+                <div class="inline-block" style="width: 250px;">
                     <h3 class="bio-title">Interests</h3>
                     <p class="bio-par">{{ profile.interests }}</p>
 

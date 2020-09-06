@@ -1,5 +1,11 @@
+@font-face {
+    font-family: 'Vision-Regular';
+    src: url('Vision-Regular.otf') format("opentype");
+}
+
 html, body {
     height: 100%;
+    font-family: 'Vision-Regular';
 }
 
 .container {
@@ -12,13 +18,12 @@ html, body {
     border-top: none;
     border-bottom: solid;
     border-radius: 0px;
-    border-color: black;
-    border-width: 3px;
+    border-color: #ccc;
+    border-width: 1px;
 }
 
 #nav-item {
     color: black;
-    font-weight: 600;
 }
 
 #nav-item:hover {
@@ -27,13 +32,10 @@ html, body {
 
 .message-box-old {
     background-color: rgba(200,200,200,0.1);
-    border-color: rgba(200,200,200,0.3);
-    border-style: solid;
-    border-width: 1px;
-    border-radius: 10px;
-    box-shadow: 0px 0px 8px 5px #eee;
-    height: 500px;
+    border-right: 1px solid #ccc;
+    height: 650px;
     overflow: scroll;
+    margin-top: 25px;
 }
 
 .message-box {
@@ -49,20 +51,40 @@ html, body {
 
 .text-bubble-left  {
     display: inline-block;
-    border-radius: 8px;
+    border-radius: 10px;
     background-color: #D5F5F0;
     text-align: left;
-    padding: .2em .5em .2em .5em;
+    padding: .5em 1em .5em 1em;
+    width: 300px;
+    margin-top: 20px;
 }
 
 .text-bubble-right {
     display: inline-block;
-    border-radius: 8px;
-    background-color:#CAEEF9;
-    text-align:right;
-    right:25px;
-    position: absolute;
-    padding: .2em .5em .2em .5em;
+    border-radius: 10px;
+    background-color: #CAEEF9;
+    text-align: right;
+    padding: .5em 1em .5em 1em;
+    width: 300px;
+    margin-top: 20px;
+}
+
+.text-bubble-center {
+    font-weight: 700;
+    border-radius: 10px;
+    color: white;
+    background-color: #00BAC7;
+    text-align: center;
+    padding: .5em 1em .5em 1em;
+    width: 300px;
+    margin-top: 20px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.center-div {
+    margin: 0 auto;
+    width: 300px;
 }
 
 .user-list {
@@ -76,13 +98,9 @@ html, body {
 
 .list-item-box {
     border-style: solid;
-    border-color: black;
-    border-width: 3px;
-    border-radius: 0px;
-}
-
-.list-item-box:hover {
-    box-shadow: 6px 6px 0px 0px pink;
+    border-color: #ccc;
+    border-width: 1px;
+    border-radius: 10px;
 }
 
 .btn-cust {
@@ -100,26 +118,28 @@ html, body {
 }
 
 .text-input {
-    border-style: solid;
-    border-color: black;
-    border-width: 3px;
-    width: 84%;
+    border-style: none;
+    border-radius: 15px;
+    background-color: #eee;
+    width: 80%;
     height: 40px;
-    margin-top:10px;
-    margin-right: 0;
+    margin-top: 10px;
+    margin-right: 30px;
 }
 
 .text-input-btn {
-    border-style: solid;
-    border-color: black;
-    border-width: 3px;
-    width: 15%;
+    border-style: none;
+    color: white;
+    font-weight: 700;
+    background-color: #00BAC7;
+    border-radius: 15px;
+    width: 10%;
     height: 40px;
     margin: 0 0 0 0;
 }
 
 .text-input-btn:hover {
-    box-shadow: 6px 6px 0px 0px pink;
+    box-shadow: 6px 6px 0px 0px #ccc;
 }
 
 .profile-img {
@@ -132,12 +152,20 @@ html, body {
 }
 
 .cropped-img {
-    width: 200px; /* width of container */
     height: 200px; /* height of container */
     object-fit: cover;
     margin: 2px;
     border-radius: 15px;
     box-shadow: 0px 0px 5px 3px #eee;
+}
+
+.message-box-img {
+    height: 75px; /* height of container */
+    width: 75px;
+    object-fit: cover;
+    margin: 2px;
+    border-radius: 100%;
+    vertical-align: top;
 }
 
 .inline-block {
@@ -158,13 +186,15 @@ html, body {
 }
 
 .bio-par {
-    margin-bottom: 40px;
+    margin-bottom: 75px;
+    background-color: rgba(200,200,200,0.1);
+    padding: .5em 1em .5em 1em;
+    border-radius: 10px;
 }
 
 .bio-title {
-    background-color: #eee;
-    padding: .3em .5em .3em .5em;
-    border-radius: 5px;
+    padding-bottom: .3em;
+    border-bottom: solid 1px #ccc;
 }
 
 .user-info {

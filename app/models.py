@@ -60,7 +60,7 @@ class CreateMatch(db.Model):
     matched = Column('matched', Boolean, default=False)
 
 
-class UserPhotos(db.Model):
+class UserPhoto(db.Model):
 
     __tablename__ = "user_photos"
 

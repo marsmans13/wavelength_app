@@ -1,5 +1,4 @@
 from flask import Flask
-# import flask_login
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
@@ -12,6 +11,15 @@ config = Config()
 app.config.from_object(config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
+
+
+from flask_uploads import UploadSet, configure_uploads, IMAGES
+
+
+photos = UploadSet('photos', IMAGES)
+
+app.config['UPLOADED_PHOTOS_DEST'] = '/tmp'
+configure_uploads(app, photos)
 
 
 from app.auth import auth_bp

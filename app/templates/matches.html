@@ -5,14 +5,25 @@
 {% endblock %}
 
 {% block content %}
+<div class="container-fluid" style="margin:0 30px;">
     <div class="row">
-        <h3>Matches</h3>
-        {% for match in matches %}
-            <div class="col-sm-3 list-item-box">
+        <div class="col-lg-3">
+            <h2>Matches</h2>
+        </div>
+    </div>
+    <br>
+    {% for match, photo in matches %}
+        <div class="row">
+            <div class="col-lg-3 list-item-box">
                 <a class="user-list" href="{{ url_for('profile_bp.send_message', user_id=match.id) }}">
-                    <h3>{{ match.username }}, {{ match.age }}</h3>
+                    <img style="margin:20px 20px 20px 0;" class="inline-block cropped-img" src="{{ photo }}" alt="profile photo">
+                    <div class="inline-block">
+                        <h3>{{ match.username }}, {{ match.age }}</h3>
+                        <p>{{ match.bio }}</p>
+                    </div>
                 </a>
             </div>
-        {% endfor %}
-    </div>
+        </div>
+    {% endfor %}
+</div>
 {% endblock %}

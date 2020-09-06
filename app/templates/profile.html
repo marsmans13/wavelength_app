@@ -4,8 +4,8 @@
 {% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="row">
+<div class="container-fluid" style="margin:0 30px;">
+    <div class="row-fluid">
         <h1>{{ user.username }}, {{ user.age }}</h1>
         <div class="col-sm-3 list-item-box btn-cust">
             {% if not matched %}
@@ -25,45 +25,48 @@
     </div>
     <br/>
     <div class="row">
-        <div class="col-lg-12 list-item-box bio-box">
-            <div style="margin:10px 10px 20px 10px">
-                <div class="row">
-                    <h3>Bio</h3>
-                    <p>{{ user.bio }}</p>
+        <div class="col-lg-12 list-item-box bio-box inline-block">
+            <div class="inline-block" style="display:flex; align-items: center; margin-top:30px">
+                {% for photo in photos %}
+                    <img class="inline-block cropped-img" src="{{ photo }}"
+                         alt="profile photo" style="border-radius:20px; margin-right:20px">
+                {% endfor %}
+            </div>
+            <div style="display:block; margin-top:15px; margin-bottom:0; text-align:left">
+                <p class="inline-block" style="border-right: 1px solid #ccc; padding: 5px 25px 0 25px;">{{ user.age }}</p>
+                <p class="inline-block" style="border-right: 1px solid #ccc; padding: 5px 25px 0 25px;">
+                    <img src="/static/pin.svg" alt="pin icon" style="width:20px; margin-right:10px">
+                    {{ location.place_name }}, {{ location.state_name }}
+                </p>
+                <p class="inline-block" style="border-right: 1px solid #ccc; padding: 5px 25px 0 25px;">
+                    <img src="/static/work.svg" alt="job icon" style="width:20px; margin-right:10px">student
+                </p>
+                <p class="inline-block" style="border-right: 1px solid #ccc; padding: 5px 25px 0 25px;">
+                    <img src="/static/eye.svg" alt="eye icon" style="width:20px; margin-right:10px">friends
+                </p>
+                <hr style="margin-top:5px; color: #ccc">
+            </div>
+            <div class="bio-box" style="margin:30px 10px 20px 10px;">
+                <div class="inline-block" style="float:left; text-align:left; width: 250px;">
+                    <h3 class="bio-title">Bio</h3>
+                    <p class="bio-par">{{ user.bio }}</p>
+
+                    <h3 class="bio-title">Location</h3>
+                    <p class="bio-par">{{ location.place_name }}, {{ location.state_name }}</p>
                 </div>
-                <div class="row">
-                    <h3>Interests</h3>
-                    <p>{{ user.interests }}</p>
-                </div>
-                <div class="row">
-                    <h3>Dislikes</h3>
-                    <p>{{ user.pet_peeves }}</p>
-                </div>
-                <div class="row">
-                    <h3>Location</h3>
-                    <p>{{ location.place_name }}, {{ location.state_name }}</p>
+
+                <div class="inline-block" style="width: 250px;">
+                    <h3 class="bio-title">Interests</h3>
+                    <p class="bio-par">{{ user.interests }}</p>
+
+                    <h3 class="bio-title">Dislikes</h3>
+                    <p class="bio-par">{{ user.pet_peeves }}</p>
                 </div>
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-12 profile-img">
-              <div class="inline-block">
-                <img class="cropped-img" src="/static/IMG_0792.jpeg " alt="profile photo">
-              </div>
 
-              <div class="inline-block">
-                <img class="cropped-img" src="/static/59441072255__78D9AAE7-9B2F-4F0D-AB5E-8EDAF4D79ED2.jpg" alt="profile photo">
-              </div>
-
-              <div class="inline-block">
-                <img class="cropped-img" src="/static/IMG_0847.jpeg" alt="profile photo">
-              </div>
-
-            <div class="inline-block">
-                <img class="cropped-img" src="/static/IMG_1453.jpeg" alt="profile photo">
-            </div>
-        </div>
     </div>
 </div>
 {% endblock %}

@@ -5,13 +5,30 @@
 {% endblock %}
 
 {% block content %}
-  <form method="post">
-    <label for="username">Username</label>
-    <input name="username" id="username" required>
-    <label for="password">Password</label>
-    <input type="password" name="password" id="password" required>
-    <label for="email">Email</label>
-    <input name="email" id="email" required>
-    <input type="submit" value="Register">
-  </form>
+<div class="row">
+  <div class="col-lg-6">
+    <form method="post">
+      <label for="username">Username</label>
+      <input class="form-control" name="username" id="username" required>
+      <br/>
+      <label for="password">Password</label>
+      <input class="form-control" type="password" name="password" id="password" required>
+      <br/>
+      <label for="email">Email</label>
+      <input class="form-control" name="email" id="email" required>
+      <br/>
+      <label for="age">Age</label>
+      <input class="form-control" name="age" id="age" type="number"  required>
+      <br/>
+      <label for="gender">Gender</label>
+      <select class="form-control" id="gender" name="gender">
+        <option value="women">Woman</option>
+        <option value="men">Man</option>
+        <option value="both">Non-Binary</option>
+      </select>
+      <br/>
+      <input class="form-control" type="submit" value="Register">
+    </form>
+  </div>
+</div>
 {% endblock %}
