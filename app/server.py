@@ -7,7 +7,7 @@ from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
 from app import db, photos
-from app.models import User, Match, Message, CreateMatch, UserPhoto
+from app.models import User, Match, Message, CreateMatch, UserPhoto, Pass
 from app.auth import get_user
 
 profile_bp = Blueprint('profile_bp', __name__)
@@ -50,6 +50,9 @@ def home():
         if request.form.get('zip'):
             print('ZIP CODE:', request.form['zip'])
             user.zip = request.form['zip']
+        if request.form.get('birthdate'):
+            print(request.form['birthdate'])
+            user.birthdate = request.form['birthdate']
         db.session.add(user)
         db.session.commit()
     if not user.zip:
@@ -67,7 +70,12 @@ def home():
         url = 'https://spectrum-user-images.s3.us-east-2.amazonaws.com/{}'.format(photo.photo)
         photo_urls.append(url)
 
-    return render_template('home.html', user=user, city=city, state=state, photos=photo_urls)
+    age = 0
+    print(user.birthdate)
+    if user.birthdate:
+        age = calculate_age(user.birthdate)
+
+    return render_template('home.html', user=user, city=city, state=state, photos=photo_urls, age=age)
 
 
 def get_location(zip):
@@ -89,13 +97,31 @@ def search_users():
     users_nearby = User.query.filter_by(zip=user.zip).filter(User.email != user.email).all()
     print(users_nearby)
 
+    passed_users = Pass.query.filter_by(passer=user.id).all()
+    pass_ids = []
+    for passed in passed_users:
+        pass_ids.append(passed.passee)
+    print(pass_ids)
+    create_matches = CreateMatch.query.filter_by(matcher=user.id).all()
+    awaiting_matches = []
+    for match in create_matches:
+        awaiting_matches.append(match.matchee)
+    print(awaiting_matches)
+
     search_users = []
     for user in users_nearby:
 
-        photo = UserPhoto.query.filter_by(user_id=user.id).first()
-        photo_url = 'https://spectrum-user-images.s3.us-east-2.amazonaws.com/{}'.format(photo.photo)
+        if user.id not in pass_ids and user.id not in awaiting_matches:
 
-        search_users.append((user, photo_url))
+            photo = UserPhoto.query.filter_by(user_id=user.id).first()
+            photo_url = 'https://spectrum-user-images.s3.us-east-2.amazonaws.com/{}'.format(photo.photo)
+
+            age = 0
+            print(user.birthdate)
+            if user.birthdate:
+                age = calculate_age(user.birthdate)
+
+            search_users.append((user, photo_url, age))
 
     return render_template('search.html', users_nearby=users_nearby, search_users=search_users)
 
@@ -107,17 +133,24 @@ def user_profile(user_id):
     profile = User.query.filter_by(id=user_id).first()
     location_pd = get_location(profile.zip)
 
+    awaiting_match = False
+
     if request.method == 'POST':
-        if request.form['userID']:
-            print(request.form['userID'])
-            new_match = match_user(int(request.form['userID']))
+        if request.form.get('match_user_id'):
+            new_match = match_user(int(request.form['match_user_id']))
             if new_match:
-                flash("New match created")
-    match = CreateMatch.query.filter_by(matcher=user.id).filter_by(matchee=profile.id).filter_by(matched=True).first()
+                flash("You have matched!")
+        elif request.form.get('pass_user_id'):
+            pass_user(int(request.form['pass_user_id']))
+            flash('You have passed.')
+            return redirect(url_for('profile_bp.search_users'))
+
+    matched = False
+    match = CreateMatch.query.filter_by(matcher=user.id).filter_by(matchee=profile.id).first()
     if match:
-        matched = True
-    else:
-        matched = False
+        matched = match.matched
+        if not matched:
+            awaiting_match = True
 
     photos = UserPhoto.query.filter_by(user_id=profile.id).all()
     photo_urls = []
@@ -125,7 +158,13 @@ def user_profile(user_id):
         photo_urls.append('https://spectrum-user-images.s3.us-east-2.amazonaws.com/{}'.format(photo.photo))
     print(photo_urls)
 
-    return render_template('profile.html', user=profile, location=location_pd, matched=matched, match=match, photos=photo_urls)
+    age = 0
+    print(profile.birthdate)
+    if profile.birthdate:
+        age = calculate_age(profile.birthdate)
+
+    return render_template('profile.html', user=profile, location=location_pd, matched=matched, match=match,
+                           photos=photo_urls, awaiting_match=awaiting_match, age=age)
 
 
 def match_user(user_id):
@@ -144,11 +183,52 @@ def match_user(user_id):
         existing_match.matched = True
         db.session.add(existing_match)
 
-        # new_match = Match(user_1=user.id, user_2=profile.id, timestamp=datetime.datetime.now())
-        # db.session.add(new_match)
+        new_match = Match(user_1=user.id, user_2=profile.id, timestamp=datetime.datetime.now())
+        db.session.add(new_match)
         db.session.commit()
 
+        return True
+
+
+def pass_user(user_id):
+    user = get_user(session.get('email'))
+
+    profile = User.query.filter_by(id=user_id).first()
+    new_pass = Pass(passer=user.id, passee=profile.id)
+    db.session.add(new_pass)
+    db.session.commit()
+
     return True
+
+
+@profile_bp.route('/unmatch_user_<user_id>', methods=['GET', 'POST'])
+def unmatch_user(user_id):
+    user = get_user(session.get('email'))
+
+    match = Match.query.filter_by(user_1=int(user_id)).filter_by(user_2=user.id).first()
+    if not match:
+        match = Match.query.filter_by(user_2=int(user_id)).filter_by(user_1=user.id).first()
+    print("MATCH", match)
+    print(match.user_1, match.user_2)
+
+    db.session.delete(match)
+    db.session.commit()
+
+    create_match = CreateMatch.query.filter_by(matcher=user.id).filter_by(matchee=int(user_id)).first()
+    print(create_match)
+    create_match.matched = False
+    db.session.add(create_match)
+    db.session.commit()
+
+    create_match_matchee = CreateMatch.query.filter_by(matcher=int(user_id)).filter_by(matchee=user.id).first()
+    print(create_match_matchee)
+    create_match_matchee.matched = False
+    db.session.add(create_match_matchee)
+    db.session.commit()
+
+    flash('Unmatched successfully.')
+
+    return redirect(url_for('profile_bp.show_matches'))
 
 
 @profile_bp.route('/send_message_<user_id>', methods=['GET', 'POST'])
@@ -157,17 +237,13 @@ def send_message(user_id):
     profile = User.query.filter_by(id=user_id).first()
     location_pd = get_location(profile.zip)
 
+    match = Match.query.filter_by(user_1=int(user_id)).filter_by(user_2=user.id).first()
+    if not match:
+        match = Match.query.filter_by(user_2=int(user_id)).filter_by(user_1=user.id).first()
+
     if request.method == 'POST':
         text = request.form.get('text')
         print(text)
-        match = Match.query.filter_by(user_1=int(user_id)).first()
-        if not match:
-            match = Match.query.filter_by(user_2=int(user_id)).first()
-        if match.user_1 == user.id:
-            receiver = match.user_2
-        else:
-            receiver = match.user_1
-        print(receiver)
 
         message = Message(match_id=match.id,
                           sender=user.id,
@@ -176,7 +252,7 @@ def send_message(user_id):
         db.session.add(message)
         db.session.commit()
 
-    messages = Message.query.filter_by()
+    messages = Message.query.filter_by(match_id=match.id).all()
     user_photo = UserPhoto.query.filter_by(user_id=user.id).first()
     match_photo = UserPhoto.query.filter_by(user_id=profile.id).first()
 
@@ -195,8 +271,14 @@ def send_message(user_id):
         profile_photos.append('https://spectrum-user-images.s3.us-east-2.amazonaws.com/{}'.format(photo.photo))
     print(profile_photos)
 
+    age = 0
+    print(profile.birthdate)
+    if profile.birthdate:
+        age = calculate_age(profile.birthdate)
+
     return render_template('messages.html', profile=profile, messages=messages, location=location_pd,
-                           user_photo=user_photo_url, match_photo=match_photo_url, profile_photos=profile_photos)
+                           user_photo=user_photo_url, match_photo=match_photo_url, profile_photos=profile_photos,
+                           age=age)
 
 
 @profile_bp.route('/matches', methods=['GET', 'POST'])
@@ -212,7 +294,13 @@ def show_matches():
         photo = UserPhoto.query.filter_by(user_id=mu.id).first()
         photo_url = 'https://spectrum-user-images.s3.us-east-2.amazonaws.com/{}'.format(photo.photo)
 
-        match_users.append((mu, photo_url))
+        age = 0
+        print(mu.birthdate)
+        if mu.birthdate:
+            age = calculate_age(mu.birthdate)
+
+        match_users.append((mu, photo_url, age))
+
 
     return render_template('matches.html', matches=match_users)
 
@@ -268,6 +356,13 @@ def save_image_to_profile(s3_path):
     print(s3_path)
     db.session.add(new_photo)
     db.session.commit()
+
+
+def calculate_age(birthdate):
+    today = datetime.date.today()
+    age = today.year - birthdate.year - ((today.month, today.day) < (birthdate.month, birthdate.day))
+
+    return age
 
 
 # s3 = boto3.client('s3')

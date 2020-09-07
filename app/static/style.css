@@ -27,7 +27,7 @@ html, body {
 }
 
 #nav-item:hover {
-    color: pink;
+    color: gray;
 }
 
 .message-box-old {
@@ -107,6 +107,7 @@ html, body {
     padding: 5px 8px;
     background-color: white;
     font-weight: 600;
+    border-style: solid;
 }
 
 .bio-box {
@@ -138,6 +139,18 @@ html, body {
     margin: 0 0 0 0;
 }
 
+.match-btn {
+    border-style: none;
+    font-size: medium;
+    color: white;
+    font-weight: 700;
+    background-color: #00BAC7;
+    border-radius: 15px;
+    margin: 0 0 0 0;
+    padding: 1em 1.5em 1em 1.5em;
+    width: 100px;
+}
+
 .text-input-btn:hover {
     box-shadow: 6px 6px 0px 0px #ccc;
 }
@@ -157,6 +170,24 @@ html, body {
     margin: 2px;
     border-radius: 15px;
     box-shadow: 0px 0px 5px 3px #eee;
+}
+
+.cropped-img-cir {
+    height: 200px; /* height of container */
+    width: 200px;
+    object-fit: cover;
+    margin: 2px;
+    border-radius: 100%;
+    box-shadow: 0px 0px 5px 3px #eee;
+}
+
+.cropped-img-profile {
+    height: 300px; /* height of container */
+    object-fit: cover;
+    margin: 2px;
+    box-shadow: 0px 0px 5px 3px #eee;
+    border-radius:20px;
+    margin-right:20px
 }
 
 .message-box-img {
@@ -182,7 +213,7 @@ html, body {
 }
 
 .username:hover {
-    color: pink;
+    color: gray;
 }
 
 .bio-par {

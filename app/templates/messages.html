@@ -10,6 +10,8 @@
             <div class="message-box-old">
                 <div>
                     <p class="text-bubble-center" style="text-align:center;">
+                        love.bot <img src="/static/red-heart.svg" alt="pin icon" style="width:20px; margin-right:10px">
+                        <br>
                         Congrats, you and {{ profile.username }} have matched! Here's an ice breaker for you:
                         <br>
                         What is your favorite topic to read about?
@@ -50,6 +52,13 @@
 
         <div class="col-lg-6" style="margin-top:0px; padding-left:50px">
             <h1>{{ profile.username }}</h1>
+
+            <div class="inline-block" style="margin-right:15px">
+                <form action="{{ url_for('profile_bp.unmatch_user', user_id=profile.id) }}" method="post">
+                    <input type="submit" value="unmatch">
+                </form>
+            </div>
+
             <div style="display:flex; align-items: center; margin-top:30px">
                 {% for photo in profile_photos %}
                     <img class="inline-block cropped-img" src="{{ photo }}"
@@ -57,7 +66,7 @@
                 {% endfor %}
             </div>
             <div style="display:block; margin-top:15px; margin-bottom:0;">
-                <p class="inline-block" style="border-right: 1px solid #ccc; padding: 5px 25px 0 25px;">{{ profile.age }}</p>
+                <p class="inline-block" style="border-right: 1px solid #ccc; padding: 5px 25px 0 25px;">{{ age }}</p>
                 <p class="inline-block" style="border-right: 1px solid #ccc; padding: 5px 25px 0 25px;">
                     <img src="/static/pin.svg" alt="pin icon" style="width:20px; margin-right:10px">
                     {{ location.place_name }}, {{ location.state_name }}

@@ -7,23 +7,35 @@
 {% block content %}
 <div class="container-fluid" style="margin:0 30px;">
     <div class="row">
-        <div class="col-lg-3">
+        <div class="col-lg-6">
             <h2>People Near You</h2>
         </div>
     </div>
     <br>
-    {% for user, photo in search_users %}
-    <div class="row">
-        <div class="col-lg-3 list-item-box">
-            <a class="user-list" href="{{ url_for('profile_bp.user_profile', user_id=user.id) }}">
-                <img style="margin:20px 20px 20px 0;" class="inline-block cropped-img" src="{{ photo }}" alt="profile photo">
+    <div class="row-fluid">
+        {% for user, photo, age in search_users %}
+            <div class="col-lg-6">
                 <div class="inline-block">
-                    <h3>{{ user.username }}, {{ user.age }}</h3>
-                    <p>{{ user.bio }}</p>
+                    <a class="user-list" href="{{ url_for('profile_bp.user_profile', user_id=user.id) }}">
+
+                        <div style="width:80%; margin-bottom:20px;">
+                            <img style="width:600px; height:400px; object-fit:cover;" src="{{ photo }}" alt="profile photo">
+                            <div style="position:absolute; bottom:20px; background-color:rgba(50,50,50,0.4); width:600px;">
+                                <h3 style="color:white; margin-left:15px; text-shadow: 1px 1px #111;">{{ user.username }}, {{ age }}</h3>
+                                {% if not user.bio  %}
+                                    <p style="color:white; margin-left:15px">{{ user.bio }}</p>
+                                {% elif user.bio|length > 75 %}
+                                    <p style="color:white; margin-left:15px">{{ user.bio[:85] }}...</p>
+                                {% else %}
+                                    <p style="color:white; margin-left:15px">{{ user.bio }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                    </a>
                 </div>
-            </a>
-        </div>
+            </div>
+        {% endfor %}
     </div>
-    {% endfor %}
 </div>
 {% endblock %}

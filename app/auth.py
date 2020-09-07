@@ -1,4 +1,5 @@
 import functools
+import datetime
 
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for, sessions
@@ -20,6 +21,7 @@ def register():
         email = request.form['email']
         age = request.form['age']
         gender = request.form['gender']
+        birthdate = request.form['birthdate']
         if age:
             age = int(age)
         error = None
@@ -35,7 +37,7 @@ def register():
             error = 'Email {} already exists'.format(email)
 
         if error is None:
-            user = User(username=username, password=password, email=email, age=age, gender=gender)
+            user = User(username=username, password=password, email=email, age=age, gender=gender, birthdate=birthdate)
             db.session.add(user)
             db.session.commit()
 
@@ -44,7 +46,14 @@ def register():
             return redirect(url_for('auth_bp.login'))
         flash(error)
 
-    return render_template('register.html')
+    today = datetime.date.today()
+    max_year = today.year - 18
+    max_month = '{:02d}'.format(today.month)
+    max_day = '{:02d}'.format(today.day)
+    max_date = '{}-{}-{}'.format(max_year, max_month, max_day)
+    print(max_date)
+
+    return render_template('register.html', max_date=max_date)
 
 
 @auth_bp.route('/', methods=['GET', 'POST'])
