@@ -12,16 +12,25 @@
         </div>
     </div>
     <br>
-    {% for match, photo, age in matches %}
-        <div class="row" style="margin:10px;">
-            <div class="col-lg-3 list-item-box">
-                <a class="user-list" href="{{ url_for('profile_bp.send_message', user_id=match.id) }}">
-                    <img style="margin:20px 20px 20px 0;" class="inline-block cropped-img-cir" src="{{ photo }}" alt="profile photo">
-                    <div class="inline-block">
-                        <h3>{{ match.username }}, {{ age }}</h3>
-                        <p>{{ match.bio }}</p>
-                    </div>
-                </a>
+    {% for match, photo, age, last_message in matches %}
+        <div class="row-fluid">
+            <div class="col-lg-6">
+                <div class="inline-block list-item-box" style="width:80%; padding:10px">
+                    <a class="user-list" href="{{ url_for('profile_bp.send_message', user_id=match.id) }}">
+                        <img style="margin:20px 20px 20px 0;" class="inline-block cropped-img-cir" src="{{ photo }}" alt="profile photo">
+                        <div class="inline-block">
+                            <h3>{{ match.username }}, {{ age }}</h3>
+                            <p class="inline-block" style="color:#888;">
+                                {{ last_message.timestamp.time().strftime('%H:%M') }}
+                            </p>
+                            {% if last_message.text|length > 50 %}
+                                <p class="inline-block" >{{ last_message.text[:50] }}...</p>
+                            {% else %}
+                                <p class="inline-block" >{{ last_message.text }}</p>
+                            {% endif %}
+                        </div>
+                    </a>
+                </div>
             </div>
         </div>
     {% endfor %}

@@ -240,6 +240,7 @@ def send_message(user_id):
     match = Match.query.filter_by(user_1=int(user_id)).filter_by(user_2=user.id).first()
     if not match:
         match = Match.query.filter_by(user_2=int(user_id)).filter_by(user_1=user.id).first()
+    print('MATCH', match)
 
     if request.method == 'POST':
         text = request.form.get('text')
@@ -299,8 +300,18 @@ def show_matches():
         if mu.birthdate:
             age = calculate_age(mu.birthdate)
 
-        match_users.append((mu, photo_url, age))
+        match_obj = Match.query.filter_by(user_1=mu.id).filter_by(user_2=user.id).first()
+        if not match_obj:
+            match_obj = Match.query.filter_by(user_2=mu.id).filter_by(user_1=user.id).first()
+        print("MATCH OBJECT:", match_obj)
 
+        messages = Message.query.filter_by(match_id=match_obj.id).filter_by(sender=mu.id).all()
+        if messages:
+            last_message = messages[-1]
+        else:
+            last_message = None
+
+        match_users.append((mu, photo_url, age, last_message))
 
     return render_template('matches.html', matches=match_users)
 
@@ -349,6 +360,14 @@ def upload_image():
     return redirect(url_for('profile_bp.home'))
 
 
+@profile_bp.route('/delete_image', methods=['GET', 'POST'])
+def delete_image():
+    print("TEST")
+
+    user = get_user(session.get('email'))
+    bucket = 'spectrum-user-images'
+
+
 def save_image_to_profile(s3_path):
     user = get_user(session.get('email'))
 
@@ -356,6 +375,16 @@ def save_image_to_profile(s3_path):
     print(s3_path)
     db.session.add(new_photo)
     db.session.commit()
+
+
+def delete_image_from_profile(s3_path):
+    # user = get_user(session.get('email'))
+    #
+    # new_photo = UserPhoto(user_id=user.id, photo=s3_path)
+    # print(s3_path)
+    # db.session.add(new_photo)
+    # db.session.commit()
+    pass
 
 
 def calculate_age(birthdate):

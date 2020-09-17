@@ -13,9 +13,14 @@
     </div>
     <div class="row">
         <div class="col-lg-6">
-            <div class="">
+            <div class="inline-block">
                 {% for photo in photos %}
-                    <img class="inline-block cropped-img" src="{{ photo }}" alt="profile photo">
+                    <div class="img-container inline-block">
+                        <img class="inline-block cropped-img" src="{{ photo }}" alt="profile photo" style="height:300px">
+                        <div class="delete_btn">
+                            <a href="{{ url_for('profile_bp.delete_image', photo_id=photo.id) }}">Remove</a>
+                        </div>
+                    </div>
                 {% endfor %}
             </div>
         </div>
@@ -43,6 +48,10 @@
     </div>
 
     <div class="row">
+        <button class="btn-cust list-item-box user-list" onclick="addImageFunction()">Add Photo</button>
+    </div>
+
+    <div id="addImage" class="row">
         <div class="col-sm">
             <form action="{{ url_for('profile_bp.upload_image') }}" method="post" enctype=multipart/form-data>
               <label for="img">Add image:</label>
@@ -93,9 +102,18 @@
 <script>
     window.onload = function() {
       document.getElementById('updateInfo').style.display = 'none';
+      document.getElementById('addImage').style.display = 'none';
     };
     function myFunction() {
       var x = document.getElementById("updateInfo");
+      if (x.style.display === "none") {
+        x.style.display = "block";
+      } else {
+        x.style.display = "none";
+      }
+    };
+    function addImageFunction() {
+      var x = document.getElementById("addImage");
       if (x.style.display === "none") {
         x.style.display = "block";
       } else {
