@@ -22,7 +22,7 @@ configure_uploads(app, photos)
 
 
 from app.auth import auth_bp
-from app.server import profile_bp
+from server import profile_bp
 
 app.register_blueprint(auth_bp, url_prefix='/auth')
 app.register_blueprint(profile_bp, url_prefix='/profile')
