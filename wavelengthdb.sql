@@ -16,12 +16,47 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
+ALTER TABLE ONLY public.user_photos DROP CONSTRAINT user_photos_user_id_fkey;
+ALTER TABLE ONLY public.pass DROP CONSTRAINT pass_passer_fkey;
+ALTER TABLE ONLY public.pass DROP CONSTRAINT pass_passee_fkey;
+ALTER TABLE ONLY public.message DROP CONSTRAINT message_sender_fkey;
+ALTER TABLE ONLY public.message DROP CONSTRAINT message_match_id_fkey;
+ALTER TABLE ONLY public.match DROP CONSTRAINT match_user_2_fkey;
+ALTER TABLE ONLY public.match DROP CONSTRAINT match_user_1_fkey;
+ALTER TABLE ONLY public.create_match DROP CONSTRAINT create_match_matcher_fkey;
+ALTER TABLE ONLY public.create_match DROP CONSTRAINT create_match_matchee_fkey;
+ALTER TABLE ONLY public."user" DROP CONSTRAINT user_pkey;
+ALTER TABLE ONLY public.user_photos DROP CONSTRAINT user_photos_pkey;
+ALTER TABLE ONLY public.pass DROP CONSTRAINT pass_pkey;
+ALTER TABLE ONLY public.message DROP CONSTRAINT message_pkey;
+ALTER TABLE ONLY public.match DROP CONSTRAINT match_pkey;
+ALTER TABLE ONLY public.create_match DROP CONSTRAINT create_match_pkey;
+ALTER TABLE ONLY public.alembic_version DROP CONSTRAINT alembic_version_pkc;
+ALTER TABLE public.user_photos ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public."user" ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.pass ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.message ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.match ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.create_match ALTER COLUMN id DROP DEFAULT;
+DROP SEQUENCE public.user_photos_id_seq;
+DROP TABLE public.user_photos;
+DROP SEQUENCE public.user_id_seq;
+DROP TABLE public."user";
+DROP SEQUENCE public.pass_id_seq;
+DROP TABLE public.pass;
+DROP SEQUENCE public.message_id_seq;
+DROP TABLE public.message;
+DROP SEQUENCE public.match_id_seq;
+DROP TABLE public.match;
+DROP SEQUENCE public.create_match_id_seq;
+DROP TABLE public.create_match;
+DROP TABLE public.alembic_version;
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
 
 --
--- Name: alembic_version; Type: TABLE; Schema: public; Owner: postgres
+-- Name: alembic_version; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.alembic_version (
@@ -29,10 +64,8 @@ CREATE TABLE public.alembic_version (
 );
 
 
-ALTER TABLE public.alembic_version OWNER TO postgres;
-
 --
--- Name: create_match; Type: TABLE; Schema: public; Owner: postgres
+-- Name: create_match; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.create_match (
@@ -43,10 +76,8 @@ CREATE TABLE public.create_match (
 );
 
 
-ALTER TABLE public.create_match OWNER TO postgres;
-
 --
--- Name: create_match_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: create_match_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public.create_match_id_seq
@@ -58,17 +89,15 @@ CREATE SEQUENCE public.create_match_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.create_match_id_seq OWNER TO postgres;
-
 --
--- Name: create_match_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: create_match_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public.create_match_id_seq OWNED BY public.create_match.id;
 
 
 --
--- Name: match; Type: TABLE; Schema: public; Owner: postgres
+-- Name: match; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.match (
@@ -80,10 +109,8 @@ CREATE TABLE public.match (
 );
 
 
-ALTER TABLE public.match OWNER TO postgres;
-
 --
--- Name: match_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: match_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public.match_id_seq
@@ -95,17 +122,15 @@ CREATE SEQUENCE public.match_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.match_id_seq OWNER TO postgres;
-
 --
--- Name: match_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: match_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public.match_id_seq OWNED BY public.match.id;
 
 
 --
--- Name: message; Type: TABLE; Schema: public; Owner: postgres
+-- Name: message; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.message (
@@ -117,10 +142,8 @@ CREATE TABLE public.message (
 );
 
 
-ALTER TABLE public.message OWNER TO postgres;
-
 --
--- Name: message_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: message_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public.message_id_seq
@@ -132,17 +155,15 @@ CREATE SEQUENCE public.message_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.message_id_seq OWNER TO postgres;
-
 --
--- Name: message_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: message_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public.message_id_seq OWNED BY public.message.id;
 
 
 --
--- Name: pass; Type: TABLE; Schema: public; Owner: postgres
+-- Name: pass; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.pass (
@@ -152,10 +173,8 @@ CREATE TABLE public.pass (
 );
 
 
-ALTER TABLE public.pass OWNER TO postgres;
-
 --
--- Name: pass_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: pass_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public.pass_id_seq
@@ -167,17 +186,15 @@ CREATE SEQUENCE public.pass_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.pass_id_seq OWNER TO postgres;
-
 --
--- Name: pass_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: pass_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public.pass_id_seq OWNED BY public.pass.id;
 
 
 --
--- Name: user; Type: TABLE; Schema: public; Owner: postgres
+-- Name: user; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public."user" (
@@ -196,10 +213,8 @@ CREATE TABLE public."user" (
 );
 
 
-ALTER TABLE public."user" OWNER TO postgres;
-
 --
--- Name: user_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: user_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public.user_id_seq
@@ -211,17 +226,15 @@ CREATE SEQUENCE public.user_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.user_id_seq OWNER TO postgres;
-
 --
--- Name: user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public.user_id_seq OWNED BY public."user".id;
 
 
 --
--- Name: user_photos; Type: TABLE; Schema: public; Owner: postgres
+-- Name: user_photos; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.user_photos (
@@ -231,10 +244,8 @@ CREATE TABLE public.user_photos (
 );
 
 
-ALTER TABLE public.user_photos OWNER TO postgres;
-
 --
--- Name: user_photos_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: user_photos_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public.user_photos_id_seq
@@ -246,59 +257,57 @@ CREATE SEQUENCE public.user_photos_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.user_photos_id_seq OWNER TO postgres;
-
 --
--- Name: user_photos_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: user_photos_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public.user_photos_id_seq OWNED BY public.user_photos.id;
 
 
 --
--- Name: create_match id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: create_match id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.create_match ALTER COLUMN id SET DEFAULT nextval('public.create_match_id_seq'::regclass);
 
 
 --
--- Name: match id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: match id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.match ALTER COLUMN id SET DEFAULT nextval('public.match_id_seq'::regclass);
 
 
 --
--- Name: message id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: message id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.message ALTER COLUMN id SET DEFAULT nextval('public.message_id_seq'::regclass);
 
 
 --
--- Name: pass id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: pass id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.pass ALTER COLUMN id SET DEFAULT nextval('public.pass_id_seq'::regclass);
 
 
 --
--- Name: user id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: user id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."user" ALTER COLUMN id SET DEFAULT nextval('public.user_id_seq'::regclass);
 
 
 --
--- Name: user_photos id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: user_photos id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.user_photos ALTER COLUMN id SET DEFAULT nextval('public.user_photos_id_seq'::regclass);
 
 
 --
--- Data for Name: alembic_version; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: alembic_version; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY public.alembic_version (version_num) FROM stdin;
@@ -307,7 +316,7 @@ COPY public.alembic_version (version_num) FROM stdin;
 
 
 --
--- Data for Name: create_match; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: create_match; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY public.create_match (id, matcher, matchee, matched) FROM stdin;
@@ -318,21 +327,25 @@ COPY public.create_match (id, matcher, matchee, matched) FROM stdin;
 4	6	1	f
 7	9	1	t
 8	1	9	t
+10	7	6	f
+9	7	2	t
+11	2	7	t
 \.
 
 
 --
--- Data for Name: match; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: match; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY public.match (id, user_1, user_2, "timestamp", blocked) FROM stdin;
 1	1	2	2020-08-05 15:52:14.984519	f
 3	1	9	2020-09-07 12:56:12.79134	f
+4	2	7	2020-09-16 13:24:18.307903	f
 \.
 
 
 --
--- Data for Name: message; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: message; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY public.message (id, sender, text, "timestamp", match_id) FROM stdin;
@@ -342,11 +355,13 @@ COPY public.message (id, sender, text, "timestamp", match_id) FROM stdin;
 4	1	thanks bro	2020-08-25 14:46:59.478312	1
 5	2	Did you know that particles can become quantum entangled across the universe and any change made to the direction of one of them immediately changes the direction of the other??	2020-09-01 14:06:30.172253	1
 6	2	Did you know that particles can become quantum entangled across the universe and any change made to the direction of one of them immediately changes the direction of the other??	2020-09-01 14:09:56.210256	1
+7	2	Hi Bailey, I like to read about murders and aliens	2020-09-16 13:24:50.431746	4
+8	7	Hi, I prefer to read about Soviet-era Russia	2020-09-16 13:25:58.661328	4
 \.
 
 
 --
--- Data for Name: pass; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: pass; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY public.pass (id, passer, passee) FROM stdin;
@@ -355,11 +370,10 @@ COPY public.pass (id, passer, passee) FROM stdin;
 
 
 --
--- Data for Name: user; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: user; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY public."user" (id, username, email, password, age, gender, "interested in", bio, interest, "pet peeves", zip, birthdate) FROM stdin;
-2	Millie	test2@gmail.com	123	4	women	women	Evil genius	swimming, cuddles, meeting new people	rules, being alone, when things don't go exactly my way	30308	\N
 3	Siggy	siggy@email.com	123	\N	\N	\N	\N	\N	\N	\N	\N
 4	Siggy	siggy@test.com	123	2	women	\N	\N	\N	\N	48103	\N
 5	Violet	violet@emial.com	123	3	women	\N	\N	\N	\N	30308	\N
@@ -368,11 +382,12 @@ COPY public."user" (id, username, email, password, age, gender, "interested in",
 1	Henry	henry@gmail.com	123	3	women	women	I'm a little shit ;)	naps, pets, eating mom's food	loud noises	30308	2017-11-08 00:00:00
 7	Bailey	bailey@email.com	123	14	men	\N	\N	\N	\N	30308	2007-02-27 00:00:00
 6	Mini	mini@email.com	123	6	women	\N	Hi, I'm Mini. I like to get up early in the morning (but not too early) and demand eye contact from my mom until she takes me on a walk. I am also very particular with my treats and am kind of a monster. I'm so sweet and cute, though, so I can get away with being a terror ;)	\N	\N	30308	\N
+2	Millie	test2@gmail.com	123	4	women	women	Evil genius	swimming, cuddles, meeting new people	rules, being alone, when things don't go exactly my way	30308	2017-01-08 00:00:00
 \.
 
 
 --
--- Data for Name: user_photos; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: user_photos; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY public.user_photos (id, user_id, photo) FROM stdin;
@@ -392,49 +407,49 @@ COPY public.user_photos (id, user_id, photo) FROM stdin;
 
 
 --
--- Name: create_match_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: create_match_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.create_match_id_seq', 8, true);
-
-
---
--- Name: match_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.match_id_seq', 3, true);
+SELECT pg_catalog.setval('public.create_match_id_seq', 11, true);
 
 
 --
--- Name: message_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: match_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.message_id_seq', 6, true);
+SELECT pg_catalog.setval('public.match_id_seq', 4, true);
 
 
 --
--- Name: pass_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: message_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.message_id_seq', 8, true);
+
+
+--
+-- Name: pass_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('public.pass_id_seq', 1, true);
 
 
 --
--- Name: user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('public.user_id_seq', 9, true);
 
 
 --
--- Name: user_photos_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: user_photos_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('public.user_photos_id_seq', 12, true);
 
 
 --
--- Name: alembic_version alembic_version_pkc; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: alembic_version alembic_version_pkc; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.alembic_version
@@ -442,7 +457,7 @@ ALTER TABLE ONLY public.alembic_version
 
 
 --
--- Name: create_match create_match_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: create_match create_match_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.create_match
@@ -450,7 +465,7 @@ ALTER TABLE ONLY public.create_match
 
 
 --
--- Name: match match_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: match match_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.match
@@ -458,7 +473,7 @@ ALTER TABLE ONLY public.match
 
 
 --
--- Name: message message_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: message message_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.message
@@ -466,7 +481,7 @@ ALTER TABLE ONLY public.message
 
 
 --
--- Name: pass pass_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: pass pass_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.pass
@@ -474,7 +489,7 @@ ALTER TABLE ONLY public.pass
 
 
 --
--- Name: user_photos user_photos_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: user_photos user_photos_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.user_photos
@@ -482,7 +497,7 @@ ALTER TABLE ONLY public.user_photos
 
 
 --
--- Name: user user_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: user user_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."user"
@@ -490,7 +505,7 @@ ALTER TABLE ONLY public."user"
 
 
 --
--- Name: create_match create_match_matchee_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: create_match create_match_matchee_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.create_match
@@ -498,7 +513,7 @@ ALTER TABLE ONLY public.create_match
 
 
 --
--- Name: create_match create_match_matcher_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: create_match create_match_matcher_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.create_match
@@ -506,7 +521,7 @@ ALTER TABLE ONLY public.create_match
 
 
 --
--- Name: match match_user_1_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: match match_user_1_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.match
@@ -514,7 +529,7 @@ ALTER TABLE ONLY public.match
 
 
 --
--- Name: match match_user_2_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: match match_user_2_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.match
@@ -522,7 +537,7 @@ ALTER TABLE ONLY public.match
 
 
 --
--- Name: message message_match_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: message message_match_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.message
@@ -530,7 +545,7 @@ ALTER TABLE ONLY public.message
 
 
 --
--- Name: message message_sender_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: message message_sender_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.message
@@ -538,7 +553,7 @@ ALTER TABLE ONLY public.message
 
 
 --
--- Name: pass pass_passee_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: pass pass_passee_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.pass
@@ -546,7 +561,7 @@ ALTER TABLE ONLY public.pass
 
 
 --
--- Name: pass pass_passer_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: pass pass_passer_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.pass
@@ -554,7 +569,7 @@ ALTER TABLE ONLY public.pass
 
 
 --
--- Name: user_photos user_photos_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: user_photos user_photos_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.user_photos

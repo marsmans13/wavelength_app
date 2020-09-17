@@ -5,9 +5,6 @@ from flask import current_app as app
 from app import db
 
 
-print('MODEL APP CREATED')
-
-
 class User(db.Model):
 
     __tablename__ = "user"

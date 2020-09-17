@@ -6,7 +6,6 @@ from config import Config
 
 
 app = Flask(__name__, instance_relative_config=True)
-"APPLICATION CREATED __INIT__"
 config = Config()
 app.config.from_object(config)
 db = SQLAlchemy(app)
@@ -31,4 +30,4 @@ app.register_blueprint(profile_bp, url_prefix='/profile')
 if __name__ == "__main__":
     # connect_to_db(app)
 
-    app.run(debug=True)
+    app.run()
