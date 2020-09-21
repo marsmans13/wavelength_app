@@ -10,11 +10,14 @@
             <div class="message-box-old">
                 <div>
                     <p class="text-bubble-center" style="text-align:center;">
-                        love.bot <img src="/static/red-heart.svg" alt="pin icon" style="width:20px; margin-right:10px">
+                        <span style="font-family:Vision-Bold">love.bot</span>
+                        <img src="/static/red-heart.svg" alt="pin icon" style="width:20px; margin-right:10px">
                         <br>
-                        Congrats, you and {{ profile.username }} have matched! Here's an ice breaker for you:
-                        <br>
-                        What is your favorite topic to read about?
+                        <span style="font-family:Vision-Light">
+                            Congrats, you and {{ profile.username }} have matched! Here's an ice breaker for you:
+                            <br>
+                            What is your favorite topic to read about?
+                        </span>
                     </p>
                 </div>
                 {% for message in messages %}
@@ -51,12 +54,23 @@
         </div>
 
         <div class="col-lg-6" style="margin-top:0px; padding-left:50px">
-            <h1>{{ profile.username }}</h1>
+            <h1 class="inline-block">{{ profile.username }}</h1>
 
-            <div class="inline-block" style="margin-right:15px">
-                <form action="{{ url_for('profile_bp.unmatch_user', user_id=profile.id) }}" method="post">
-                    <input type="submit" value="unmatch">
-                </form>
+            <div class="inline-block">
+                <button id="optionsBtn" style="background-color: transparent; border-style:none; margin-left:20px;">
+                    <img src="/static/menu.svg" alt="View options" style="width:20px; padding-bottom:10px;">
+                </button>
+            </div>
+
+            <div id="options">
+                <div class="inline-block" style="margin-right:15px">
+                    <form action="{{ url_for('profile_bp.unmatch_user', user_id=profile.id) }}" method="post">
+                        <input type="submit" value="unmatch" style="width:75px; text-align:center;">
+                    </form>
+                    <form action="#" method="post">
+                        <input type="submit" value="block" style="width:75px; text-align:center;">
+                    </form>
+                </div>
             </div>
 
             <div style="display:flex; align-items: center; margin-top:30px">
@@ -66,20 +80,22 @@
                 {% endfor %}
             </div>
             <div style="display:block; margin-top:15px; margin-bottom:0;">
-                <p class="inline-block" style="border-right: 1px solid #ccc; padding: 5px 25px 0 25px;">{{ age }}</p>
-                <p class="inline-block" style="border-right: 1px solid #ccc; padding: 5px 25px 0 25px;">
+                <p class="inline-block icon-info-bar">
+                    <img src="/static/hourglass.svg" alt="pin icon" style="width:20px; margin-right:10px">
+                    {{ age }}
+                </p>
+                <p class="inline-block icon-info-bar">
                     <img src="/static/pin.svg" alt="pin icon" style="width:20px; margin-right:10px">
                     {{ location.place_name }}, {{ location.state_name }}
                 </p>
-                <p class="inline-block" style="border-right: 1px solid #ccc; padding: 5px 25px 0 25px;">
+                <p class="inline-block icon-info-bar">
                     <img src="/static/work.svg" alt="job icon" style="width:20px; margin-right:10px">student
                 </p>
-                <p class="inline-block" style="border-right: 1px solid #ccc; padding: 5px 25px 0 25px;">
+                <p class="inline-block icon-info-bar">
                     <img src="/static/eye.svg" alt="eye icon" style="width:20px; margin-right:10px">friends
                 </p>
                 <hr style="margin-top:5px; color: #ccc">
             </div>
-
 
             <div class="bio-box" style="margin:30px 10px 20px 10px;">
                 <div class="inline-block" style="float:left; text-align:left; width: 250px;">
@@ -101,4 +117,20 @@
         </div>
     </div>
 </div>
+<script>
+    window.onload = function() {
+      document.getElementById('options').style.display = 'none';
+    };
+
+    let optionsBtn = document.getElementById('optionsBtn');
+
+    optionsBtn.onclick = function() {
+      var x = document.getElementById("options");
+      if (x.style.display === "none") {
+        x.style.display = "block";
+      } else {
+        x.style.display = "none";
+      }
+    }
+</script>
 {% endblock %}

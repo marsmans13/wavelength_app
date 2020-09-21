@@ -5,10 +5,10 @@
 {% endblock %}
 
 {% block content %}
-<div class="container-fluid" style="margin:0 30px;">
+<div class="container-fluid" style="margin:0 125px;">
     <div class="row">
-        <div class="col-lg-3">
-            <h2>Matches</h2>
+        <div class="col-lg-6">
+            <h2 style="font-family:Vision-Bold; margin-left:15px;">Matches</h2>
         </div>
     </div>
     <br>
@@ -20,13 +20,19 @@
                         <img style="margin:20px 20px 20px 0;" class="inline-block cropped-img-cir" src="{{ photo }}" alt="profile photo">
                         <div class="inline-block">
                             <h3>{{ match.username }}, {{ age }}</h3>
-                            <p class="inline-block" style="color:#888;">
-                                {{ last_message.timestamp.time().strftime('%H:%M') }}
-                            </p>
-                            {% if last_message.text|length > 50 %}
-                                <p class="inline-block" >{{ last_message.text[:50] }}...</p>
+                            {% if last_message %}
+                                <p class="inline-block" style="color:#888;">
+                                    {{ last_message.timestamp.time().strftime('%H:%M') }}
+                                </p>
+                                {% if last_message.text|length > 30 %}
+                                    <p class="inline-block" >{{ last_message.text[:30] }}...</p>
+                                {% else %}
+                                    <p class="inline-block" >{{ last_message.text }}</p>
+                                {% endif %}
                             {% else %}
-                                <p class="inline-block" >{{ last_message.text }}</p>
+                                <p class="inline-block" style="color:#333;">
+                                    No messages yet
+                                </p>
                             {% endif %}
                         </div>
                     </a>

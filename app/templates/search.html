@@ -5,30 +5,38 @@
 {% endblock %}
 
 {% block content %}
-<div class="container-fluid" style="margin:0 30px;">
+<div class="container-fluid" style="margin:0 125px;">
     <div class="row">
         <div class="col-lg-6">
-            <h2>People Near You</h2>
+            <h2 style="font-family:Vision-Bold; margin-left:15px;">People Near You</h2>
         </div>
     </div>
     <br>
     <div class="row-fluid">
         {% for user, photo, age in search_users %}
             <div class="col-lg-6">
-                <div class="inline-block">
+                <div class="inline-block" onmouseover="addUserInfo('userId{{ user.id }}')"
+                     onmouseout="hideUserInfo('userId{{ user.id }}')">
                     <a class="user-list" href="{{ url_for('profile_bp.user_profile', user_id=user.id) }}">
 
-                        <div style="width:80%; margin-bottom:20px;">
-                            <img style="width:600px; height:400px; object-fit:cover;" src="{{ photo }}" alt="profile photo">
-                            <div style="position:absolute; bottom:20px; background-color:rgba(50,50,50,0.4); width:600px;">
-                                <h3 style="color:white; margin-left:15px; text-shadow: 1px 1px #111;">{{ user.username }}, {{ age }}</h3>
+                        <div class="search-img-box" style="width:80%; margin-bottom:20px;">
+                            <img class="search-img" src="{{ photo }}" alt="profile photo">
+                            <div class="search-img-info">
+                                <h3 class="bold-txt" style="text-shadow: 1px 1px #666;">{{ user.username }}, {{ age }}</h3>
+                                <p class="bold-txt">Bio</p>
                                 {% if not user.bio  %}
-                                    <p style="color:white; margin-left:15px">{{ user.bio }}</p>
+                                    <p class="light-txt">{{ user.bio }}</p>
                                 {% elif user.bio|length > 75 %}
-                                    <p style="color:white; margin-left:15px">{{ user.bio[:85] }}...</p>
+                                    <p class="light-txt">{{ user.bio[:85] }}...</p>
                                 {% else %}
                                     <p style="color:white; margin-left:15px">{{ user.bio }}</p>
                                 {% endif %}
+                                <div class="userInfo" id="userId{{ user.id }}">
+                                    <p class="bold-txt">Special Interests</p>
+                                    <p class="light-txt">{{ user.interests }}</p>
+                                    <p class="bold-txt">Location</p>
+                                    <p class="light-txt">{{ user.zip }}</p>
+                                </div>
                             </div>
                         </div>
 
@@ -37,5 +45,24 @@
             </div>
         {% endfor %}
     </div>
+
+<script>
+    window.onload = function() {
+        var x = document.getElementsByClassName('userInfo');
+        for (i=0; i < x.length; i++) {
+            cur_element = document.getElementsByClassName('userInfo')[i];
+            cur_element.style.display = 'none';
+        }
+    };
+
+    function addUserInfo(x) {
+        document.getElementById(x).style.display = 'block';
+    }
+
+    function hideUserInfo(x) {
+        document.getElementById(x).style.display = 'none';
+    }
+
+</script>
 </div>
 {% endblock %}

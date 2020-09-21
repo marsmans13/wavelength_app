@@ -4,105 +4,116 @@
 {% endblock %}
 
 {% block content %}
-<div class="container-fluid" style="margin:0 30px;">
-    <div class="row">
-        <div class="col-sm-6">
-            <h2>Profile</h2>
-            <h3>{{ user.username }}, {{ age }}</h3>
+<div class="container-fluid" style="margin:0 150px; box-shadow: 0px 0px 10px 0 rgba(0,0,0,0.1); padding:0 20px 40px 20px; border-radius: 30px;">
+    <div class="row" style="margin: 20px 0;">
+        <div class="col-lg-6">
+            <h2 style="font-family:Vision-Bold;">{{ user.username }}</h2>
         </div>
     </div>
     <div class="row">
         <div class="col-lg-6">
             <div class="inline-block">
-                {% for photo in photos %}
-                    <div class="img-container inline-block">
-                        <img class="inline-block cropped-img" src="{{ photo }}" alt="profile photo" style="height:300px">
-                        <div class="delete_btn">
-                            <a href="{{ url_for('profile_bp.delete_image', photo_id=photo.id) }}">Remove</a>
+                {% for i in range(6) %}
+                    {% if i < photos|length %}
+                        <div class="img-container inline-block">
+                            <img class="inline-block cropped-img"
+                                 src="https://spectrum-user-images.s3.us-east-2.amazonaws.com/{{ photos[i].photo }}"
+                                 alt="profile photo">
+                            <div class="delete_btn">
+                                <a href="{{ url_for('profile_bp.delete_image', photo_id=photos[i].id) }}">Remove</a>
+                            </div>
                         </div>
-                    </div>
+                    {% else %}
+                        <div class="img-container inline-block">
+                            <img class="inline-block empty-img" src="/static/plain-white-background.jpg">
+                            <div class="delete_btn">
+                                <button class="myBtn" style="background-color: transparent; border-style:none;">Add Photo</button>
+                            </div>
+                        </div>
+                    {% endif %}
                 {% endfor %}
             </div>
-        </div>
 
-        <div class="col-lg-6 list-item-box bio-box" style="text-align:left;">
-            <div style="margin:10px 10px 20px 10px">
-                <div>
-                    <h3>Bio</h3>
-                    <p>{{ user.bio }}</p>
-                </div>
-                <div>
-                    <h3>Interests</h3>
-                    <p>{{ user.interests }}</p>
-                </div>
-                <div>
-                    <h3>Dislikes</h3>
-                    <p>{{ user.pet_peeves }}</p>
-                </div>
-                <div>
-                    <h3>Location</h3>
-                    <p>{{ city }}, {{ state }}</p>
+            <div id="myModal" class="modal">
+                <div class="modal-content">
+                    <div class="col-sm">
+                        <span id="close">&times;</span>
+                        <form action="{{ url_for('profile_bp.upload_image') }}" method="post" enctype=multipart/form-data>
+                          <label for="img">Add image:</label>
+                          <input type="file" id="img" name="img" accept="image/*">
+                          <input class="btn btn-outline-secondary" type="submit" value="Upload">
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="row">
-        <button class="btn-cust list-item-box user-list" onclick="addImageFunction()">Add Photo</button>
-    </div>
+        <div class="col-lg-4 list-item-box bio-box" style="border-style:none;">
+            <div style="text-align:left; margin:10px 10px 20px 10px">
+                <div>
+                    <h3 style="font-family:Vision-Bold">Bio</h3>
+                    <p style="font-family:Vision-Light; border-bottom: solid 1px #333; margin: 10px 0 30px 0; padding-bottom: 5px;">{{ user.bio }}</p>
+                </div>
+                <div>
+                    <h3 style="font-family:Vision-Bold">Special Interests</h3>
+                    <p style="font-family:Vision-Light; border-bottom: solid 1px #333; margin: 10px 0 30px 0; padding-bottom: 5px;">{{ user.interests }}</p>
+                </div>
+                <div>
+                    <h3 style="font-family:Vision-Bold">Dislikes</h3>
+                    <p style="font-family:Vision-Light; border-bottom: solid 1px #333; margin: 10px 0 30px 0; padding-bottom: 5px;">{{ user.pet_peeves }}</p>
+                </div>
+                <div>
+                    <h3 style="font-family:Vision-Bold">Location</h3>
+                    <p style="font-family:Vision-Light; border-bottom: solid 1px #333; margin: 10px 0 30px 0; padding-bottom: 5px;">{{ city }}, {{ state }}</p>
+                </div>
+            </div>
+        </div>
 
-    <div id="addImage" class="row">
-        <div class="col-sm">
-            <form action="{{ url_for('profile_bp.upload_image') }}" method="post" enctype=multipart/form-data>
-              <label for="img">Add image:</label>
-              <input type="file" id="img" name="img" accept="image/*">
-              <input class="btn btn-outline-secondary" type="submit" value="Upload">
-            </form>
+        <div class="col-lg-2">
+            <div class="inline-block">
+                <button id="myUpdateBtn" class="btn-cust list-item-box user-list">Update Info</button>
+            </div>
+            <div id="myUpdateModal" class="modal">
+                <div class="modal-content">
+                    <span id="closeUpdate">&times;</span>
+                    <div class="col-lg-9 input-group mb-3" style="margin:0 auto">
+                      <form action="{{ url_for('profile_bp.home') }}" method="post">
+                          <label for="interested_in">Looking For</label>
+                          <select class="form-control" id="interested_in" style="margin-bottom:10px; border-radius:10px" name="interested_in">
+                              <option value=""></option>
+                            <option style="font-family:Vision-Light; color: #777" value="women">Women</option>
+                            <option style="font-family:Vision-Light; color: #777" value="men">Men</option>
+                            <option style="font-family:Vision-Light; color: #777" value="both">Both</option>
+                          </select>
+                          <br/>
+                          <label for="bio">Bio</label>
+                          <textarea class="form-control" style="margin-bottom:10px color: #777; border-radius:10px" name="bio" id="bio" rows="4">{{ user.bio }}
+                          </textarea>
+                          <br/>
+                          <label for="interests">Special Interests</label>
+                          <input class="form-control" style="margin-bottom:10px; color: #777; border-radius:10px" name="interests" id="interests" value="{{ user.interests }}">
+                          <br/>
+                          <label for="pet_peeves">Dislikes</label>
+                          <input class="form-control" style="margin-bottom:10px; color: #777; border-radius:10px" name="pet_peeves" id="pet_peeves" value="{{ user.pet_peeves }}">
+                          <br/>
+                          <label for="birthdate">Birthdate</label>
+                          <input class="form-control" style="margin-bottom:10px; color: #777; border-radius:10px" name="birthdate" id="birthdate" type="date">
+                          <br/>
+                          <label for="zip">Zip Code</label>
+                          <input class="form-control" style="margin-bottom:10px; color: #777; border-radius:10px" name="zip" id="zip" value="{{ user.zip }}">
+                          <br/>
+                          <input class="form-control" id="update-btn" type="submit" value="Update">
+                      </form>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
-    <br>
-
-    <div class="row">
-        <button class="btn-cust list-item-box user-list" onclick="myFunction()">Update Info</button>
-    </div>
-    <br>
-
-    <div id="updateInfo" class="row">
-        <div class="col-sm-3 input-group mb-3">
-          <form action="{{ url_for('profile_bp.home') }}" method="post">
-              <label for="interested_in">Interested In</label>
-              <select class="form-control" id="interested_in" name="interested_in">
-                  <option value=""></option>
-                <option value="women">Women</option>
-                <option value="men">Men</option>
-                <option value="both">Both</option>
-              </select>
-              <br/>
-              <label for="bio">Bio</label>
-              <input class="form-control" name="bio" id="bio">
-              <br/>
-              <label for="interests">Interests</label>
-              <input class="form-control" name="interests" id="interests">
-              <br/>
-              <label for="pet_peeves">Dislikes</label>
-              <input class="form-control" name="pet_peeves" id="pet_peeves">
-              <br/>
-              <label for="birthdate">Birthdate</label>
-              <input class="form-control" name="birthdate" id="birthdate" type="date">
-              <br/>
-              <label for="zip">Zip Code</label>
-              <input class="form-control" name="zip" id="zip">
-              <br/>
-              <input class="form-control" type="submit" value="Update">
-          </form>
-        </div>
-    </div>
-
 
 <script>
     window.onload = function() {
       document.getElementById('updateInfo').style.display = 'none';
-      document.getElementById('addImage').style.display = 'none';
     };
     function myFunction() {
       var x = document.getElementById("updateInfo");
@@ -112,12 +123,44 @@
         x.style.display = "none";
       }
     };
-    function addImageFunction() {
-      var x = document.getElementById("addImage");
-      if (x.style.display === "none") {
-        x.style.display = "block";
-      } else {
-        x.style.display = "none";
+
+    // Get the modal
+    var modal = document.getElementById("myModal");
+    var updateModal = document.getElementById("myUpdateModal");
+
+    // Get the button that opens the modal
+    var btns = document.getElementsByClassName("myBtn");
+    var updateBtn = document.getElementById("myUpdateBtn");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementById("close");
+    var updateSpan = document.getElementById("closeUpdate");
+
+    for (i=0; i < btns.length; i++) {
+        btns[i].onclick = function() {
+            modal.style.display = "block";
+        }
+    }
+
+    updateBtn.onclick = function() {
+      updateModal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+    updateSpan.onclick = function() {
+        updateModal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+      else if (event.target == updateModal) {
+        updateModal.style.display = "none";
       }
     }
 </script>

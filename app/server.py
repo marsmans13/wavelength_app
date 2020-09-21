@@ -3,12 +3,13 @@ import pgeocode
 import datetime
 import boto3
 import logging
+import requests
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session, url_for
+    Blueprint, flash, g, redirect, render_template, session, url_for, request
 )
 from app import db, photos
 from app.models import User, Match, Message, CreateMatch, UserPhoto, Pass
-from app.auth import get_user
+from app.auth import get_user, login_required
 
 profile_bp = Blueprint('profile_bp', __name__)
 
@@ -30,6 +31,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 
 
 @profile_bp.route('/home', methods=['POST', 'GET'])
+@login_required
 def home():
     user = get_user(session.get('email'))
 
@@ -75,7 +77,7 @@ def home():
     if user.birthdate:
         age = calculate_age(user.birthdate)
 
-    return render_template('home.html', user=user, city=city, state=state, photos=photo_urls, age=age)
+    return render_template('home.html', user=user, city=city, state=state, photos=user_photos, age=age)
 
 
 def get_location(zip):
@@ -85,28 +87,38 @@ def get_location(zip):
     return pd
 
 
-@profile_bp.route('/update_profile', methods=['POST', 'GET'])
-def update_profile():
-    user = get_user(session.get('email'))
-
-
 @profile_bp.route('/search_users')
+@login_required
 def search_users():
     user = get_user(session.get('email'))
 
-    users_nearby = User.query.filter_by(zip=user.zip).filter(User.email != user.email).all()
+    # https://www.zipcodeapi.com/API#radius
+    api_key = "xuPeObLIaJiQ4hDU35cbJ5WAa3XReh1FrbbZoljjpUcVusUUfnFTuDi88U95N9uS"
+    zip_api_url = "https://www.zipcodeapi.com/rest/{api_key}/radius.{format}/{zip_code}/{distance}/{units}?minimal".format(
+        api_key=api_key, format="json", zip_code=user.zip, distance="5", units="miles"
+    )
+
+    zips_nearby = [user.zip]
+    try:
+        zips_request = requests.get(zip_api_url)
+        print(zips_request.json())
+        zips_nearby = zips_request['zip_codes'] + [user.zip]
+        # returns {'zip_codes': ['30315', '30316'...]}
+    except Exception as e:
+        print(f'Zip code API request failed: {e}')
+
+    users_nearby = User.query.filter(User.zip.in_(zips_nearby)).filter(User.email != user.email).all()
     print(users_nearby)
 
     passed_users = Pass.query.filter_by(passer=user.id).all()
     pass_ids = []
     for passed in passed_users:
         pass_ids.append(passed.passee)
-    print(pass_ids)
+
     create_matches = CreateMatch.query.filter_by(matcher=user.id).all()
     awaiting_matches = []
     for match in create_matches:
         awaiting_matches.append(match.matchee)
-    print(awaiting_matches)
 
     search_users = []
     for user in users_nearby:
@@ -127,6 +139,7 @@ def search_users():
 
 
 @profile_bp.route('/profile_<user_id>', methods=['POST', 'GET'])
+@login_required
 def user_profile(user_id):
     user = get_user(session.get('email'))
 
@@ -202,6 +215,7 @@ def pass_user(user_id):
 
 
 @profile_bp.route('/unmatch_user_<user_id>', methods=['GET', 'POST'])
+@login_required
 def unmatch_user(user_id):
     user = get_user(session.get('email'))
 
@@ -232,6 +246,7 @@ def unmatch_user(user_id):
 
 
 @profile_bp.route('/send_message_<user_id>', methods=['GET', 'POST'])
+@login_required
 def send_message(user_id):
     user = get_user(session.get('email'))
     profile = User.query.filter_by(id=user_id).first()
@@ -283,6 +298,7 @@ def send_message(user_id):
 
 
 @profile_bp.route('/matches', methods=['GET', 'POST'])
+@login_required
 def show_matches():
     user = get_user(session.get('email'))
 
@@ -305,7 +321,7 @@ def show_matches():
             match_obj = Match.query.filter_by(user_2=mu.id).filter_by(user_1=user.id).first()
         print("MATCH OBJECT:", match_obj)
 
-        messages = Message.query.filter_by(match_id=match_obj.id).filter_by(sender=mu.id).all()
+        messages = Message.query.filter_by(match_id=match_obj.id).all()
         if messages:
             last_message = messages[-1]
         else:
@@ -317,8 +333,8 @@ def show_matches():
 
 
 @profile_bp.route('/upload_image', methods=['GET', 'POST'])
+@login_required
 def upload_image():
-    print("TEST")
 
     user = get_user(session.get('email'))
     bucket = 'spectrum-user-images'
@@ -326,13 +342,10 @@ def upload_image():
     img = request.files['img']
 
     filename = photos.save(img)
-    print("NEW", filename)
 
     img_name = secure_filename(img.filename)
-    print(img.headers, img.name)
     user_id = str(user.id)
     file_name = '/tmp/{}'.format(filename)
-    print(file_name)
 
     # If S3 object_name was not specified, use file_name
     object_name = 'user-images/{}/{}'.format(user_id, img_name)
@@ -344,8 +357,6 @@ def upload_image():
                       )
 
     try:
-        print("TRYING")
-
         response = s3.upload_file(file_name, bucket, object_name)
         print(response)
     except Exception as e:
@@ -360,12 +371,34 @@ def upload_image():
     return redirect(url_for('profile_bp.home'))
 
 
-@profile_bp.route('/delete_image', methods=['GET', 'POST'])
-def delete_image():
-    print("TEST")
+@profile_bp.route('/delete_image_<photo_id>', methods=['GET', 'POST'])
+@login_required
+def delete_image(photo_id):
 
     user = get_user(session.get('email'))
     bucket = 'spectrum-user-images'
+    photo = UserPhoto.query.filter_by(id=int(photo_id)).first()
+
+    try:
+        s3 = boto3.resource('s3',
+                            aws_access_key_id=ACCESS_KEY,
+                            aws_secret_access_key=SECRET_KEY
+                            )
+        obj = s3.Object(bucket, photo.photo)
+        obj.delete()
+        print('photo deleted')
+    except Exception as e:
+        print("Failed to delete photo from bucket {}: {}".format(bucket, e))
+        return redirect(url_for('profile_bp.home'))
+
+    try:
+        UserPhoto.query.filter_by(user_id=user.id).filter_by(id=int(photo_id)).delete()
+        print("deleted photo from records")
+        db.session.commit()
+    except:
+        print("delete photo from db failed")
+
+    return redirect(url_for('profile_bp.home'))
 
 
 def save_image_to_profile(s3_path):
@@ -375,16 +408,6 @@ def save_image_to_profile(s3_path):
     print(s3_path)
     db.session.add(new_photo)
     db.session.commit()
-
-
-def delete_image_from_profile(s3_path):
-    # user = get_user(session.get('email'))
-    #
-    # new_photo = UserPhoto(user_id=user.id, photo=s3_path)
-    # print(s3_path)
-    # db.session.add(new_photo)
-    # db.session.commit()
-    pass
 
 
 def calculate_age(birthdate):
