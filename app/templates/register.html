@@ -17,6 +17,10 @@
           <label for="password">Password</label>
           <input class="form-control" type="password" name="password" id="password" required>
           <br/>
+          <label for="confirm_password">Confirm password</label>
+          <input class="form-control" type="password" name="confirm_password" id="confirm_password" required>
+          <span id='message'></span>
+          <br/>
           <label for="email">Email</label>
           <input class="form-control" name="email" id="email" required>
           <br/>
@@ -36,4 +40,14 @@
     </div>
   </div>
 </div>
+<script>
+  $('#password, #confirm_password').on('keyup', function () {
+  if ($('#password').val() === '') {
+    $('#message').html('Password Required').css('color', 'red');
+  } else if ($('#password').val() == $('#confirm_password').val()) {
+    $('#message').html('Matching').css('color', 'green');
+  } else
+    $('#message').html('Not Matching').css('color', 'red');
+});
+</script>
 {% endblock %}

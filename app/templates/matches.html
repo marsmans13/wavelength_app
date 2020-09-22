@@ -5,27 +5,32 @@
 {% endblock %}
 
 {% block content %}
-<div class="container-fluid" style="margin:0 125px;">
+<div class="container-fluid" style="margin:0 25%;">
     <div class="row">
         <div class="col-lg-6">
-            <h2 style="font-family:Vision-Bold; margin-left:15px;">Matches</h2>
+            <h2 style="font-family:Vision-Bold;">Matches</h2>
         </div>
     </div>
     <br>
-    {% for match, photo, age, last_message in matches %}
-        <div class="row-fluid">
-            <div class="col-lg-6">
-                <div class="inline-block list-item-box" style="width:80%; padding:10px">
+    <div class="row list-item-box" style="padding:10px 5px; height: 600px; overflow-y:auto;">
+        {% if not matches %}
+        <p style="margin-left:15px; font-family:Vision-Light">No matches to show yet</p>
+        {% endif %}
+        {% for match, photo, age, last_message in matches %}
+            <div class="col-lg-12">
+                <div style="width:100%; padding:10px; border-bottom: solid 1px #ccc;">
                     <a class="user-list" href="{{ url_for('profile_bp.send_message', user_id=match.id) }}">
-                        <img style="margin:20px 20px 20px 0;" class="inline-block cropped-img-cir" src="{{ photo }}" alt="profile photo">
+                        <img class="inline-block cropped-img-cir" src="{{ photo }}" alt="profile photo">
                         <div class="inline-block">
-                            <h3>{{ match.username }}, {{ age }}</h3>
+                            <h3 style="font-family:Vision-Bold">{{ match.username }}</h3>
+                            <div class="inline-block" style="width:500px;">
                             {% if last_message %}
-                                <p class="inline-block" style="color:#888;">
-                                    {{ last_message.timestamp.time().strftime('%H:%M') }}
+                                <p class="timestamp" id="{{ match.id }}" hidden>
+                                    {{ last_message.timestamp }}
                                 </p>
-                                {% if last_message.text|length > 30 %}
-                                    <p class="inline-block" >{{ last_message.text[:30] }}...</p>
+                                <p class="inline-block" style="color:#888;" id="timestamp_tz{{ match.id }}"></p>
+                                {% if last_message.text|length > 50 %}
+                                    <p class="inline-block" >{{ last_message.text[:50] }}...</p>
                                 {% else %}
                                     <p class="inline-block" >{{ last_message.text }}</p>
                                 {% endif %}
@@ -34,11 +39,41 @@
                                     No messages yet
                                 </p>
                             {% endif %}
+                            </div>
+                            <img class="inline-block right-arrow" src="/static/next.svg" alt="right arrow" align="right">
                         </div>
                     </a>
                 </div>
             </div>
-        </div>
-    {% endfor %}
+        {% endfor %}
+    </div>
 </div>
+<script>
+    const date1 = new Date('August 19, 1975 23:04:30 GMT+07:00');
+    const date2 = new Date('August 19, 1975 23:04:30 GMT-02:00');
+
+    let dateobj = document.getElementsByClassName('timestamp');
+    console.log(dateobj);
+    let dateobj1 = dateobj[0].textContent;
+
+    for (i=0; i < dateobj.length; i++) {
+        let id = dateobj[i].id
+        let ts = new Date(dateobj[i].textContent.concat('UTC'));
+        ts.toString();
+        let tz_date_div = document.getElementById('timestamp_tz' + id);
+        tz_date_div.innerHTML += ts.getHours() + ":" + (ts.getMinutes()<10?'0':'') + ts.getMinutes()
+    }
+
+    let ts = new Date(dateobj1.concat('UTC'));
+    ts.toString();
+    let tz_date_div = document.getElementById('timestamp_tz');
+    tz_date_div.innerHTML += ts.getHours() + ":" + (ts.getMinutes()<10?'0':'') + ts.getMinutes()
+
+    console.log(date1.getTimezoneOffset());
+    // expected output: your local timezone offset in minutes
+    // (eg -120). NOT the timezone offset of the date object.
+
+    console.log(date1.getTimezoneOffset() === date2.getTimezoneOffset());
+    // expected output: true
+</script>
 {% endblock %}

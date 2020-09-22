@@ -28,25 +28,46 @@
                 <p>Awaiting response</p>
             </div>
         {% else %}
-            <a class="user-list" href="{{ url_for('profile_bp.send_message', user_id=user.id) }}">
-                <img src="/static/message.svg" alt="message icon" style="width:30px; margin-right:8px">
+            <div style="margin-bottom:20px;">
+            <a class="user-list" href="{{ url_for('profile_bp.send_message', user_id=user.id) }}" style="margin-bottom:20px;">
+                Congrats, you and {{ user.username }} have matched!
+                <br/><br/>
+                <img src="/static/message.svg" alt="message icon" style="width:30px; margin:0 6px 0 0;">
                 send message
             </a>
+            </div>
         {% endif %}
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-12 list-item-box bio-box inline-block">
+        <div class="col-lg-12 list-item-box inline-block">
             <h1 style="text-align:left">{{ user.username }}, {{ age }}</h1>
-            <div class="inline-block" style="display:flex; margin-top:30px">
+            <div class="inline-block" style="display:flex; margin-top:30px; flex-wrap:wrap; justify-content:center">
                 {% for photo in photos %}
                     <img class="inline-block cropped-img-profile" src="{{ photo }}"
                          alt="profile photo">
                 {% endfor %}
             </div>
+            <div style="display:block; margin-top:15px; margin-bottom:0; text-align:left;">
+                <p class="inline-block icon-info-bar">
+                    <img src="/static/hourglass.svg" alt="pin icon" style="width:20px; margin-right:10px">
+                    {{ age }}
+                </p>
+                <p class="inline-block icon-info-bar">
+                    <img src="/static/pin.svg" alt="pin icon" style="width:20px; margin-right:10px">
+                    {{ location.place_name }}, {{ location.state_name }}
+                </p>
+                <p class="inline-block icon-info-bar">
+                    <img src="/static/work.svg" alt="job icon" style="width:20px; margin-right:10px">student
+                </p>
+                <p class="inline-block icon-info-bar" style="border-style: none;">
+                    <img src="/static/eye.svg" alt="eye icon" style="width:20px; margin-right:10px">friends
+                </p>
+                <hr style="margin-top:5px; color: #ccc">
+            </div>
 
             <div class="bio-box" style="margin:30px 10px 20px 10px;">
-                <div class="inline-block" style="float:left; text-align:left; width: 400px;">
+                <div class="inline-block" style="float:left; text-align:left; width: 40%;">
                     <h3 class="bio-title">Bio</h3>
                     <p class="bio-par">{{ user.bio }}</p>
 
@@ -54,7 +75,7 @@
                     <p class="bio-par">{{ location.place_name }}, {{ location.state_name }}</p>
                 </div>
 
-                <div class="inline-block" style="width: 400px;">
+                <div class="inline-block" style="width: 40%;">
                     <h3 class="bio-title">Interests</h3>
                     <p class="bio-par">{{ user.interests }}</p>
 

@@ -4,7 +4,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="container-fluid" style="margin:0 150px; box-shadow: 0px 0px 10px 0 rgba(0,0,0,0.1); padding:0 20px 40px 20px; border-radius: 30px;">
+<div class="container-fluid" style="margin:20px 150px; box-shadow: 0px 0px 10px 0 rgba(0,0,0,0.1); padding:0 20px 40px 20px; border-radius: 30px;">
     <div class="row" style="margin: 20px 0;">
         <div class="col-lg-6">
             <h2 style="font-family:Vision-Bold;">{{ user.username }}</h2>
@@ -52,19 +52,19 @@
             <div style="text-align:left; margin:10px 10px 20px 10px">
                 <div>
                     <h3 style="font-family:Vision-Bold">Bio</h3>
-                    <p style="font-family:Vision-Light; border-bottom: solid 1px #333; margin: 10px 0 30px 0; padding-bottom: 5px;">{{ user.bio }}</p>
+                    <p class="home-info-list">{{ user.bio }}</p>
                 </div>
                 <div>
                     <h3 style="font-family:Vision-Bold">Special Interests</h3>
-                    <p style="font-family:Vision-Light; border-bottom: solid 1px #333; margin: 10px 0 30px 0; padding-bottom: 5px;">{{ user.interests }}</p>
+                    <p class="home-info-list">{{ user.interests }}</p>
                 </div>
                 <div>
                     <h3 style="font-family:Vision-Bold">Dislikes</h3>
-                    <p style="font-family:Vision-Light; border-bottom: solid 1px #333; margin: 10px 0 30px 0; padding-bottom: 5px;">{{ user.pet_peeves }}</p>
+                    <p class="home-info-list">{{ user.pet_peeves }}</p>
                 </div>
                 <div>
                     <h3 style="font-family:Vision-Bold">Location</h3>
-                    <p style="font-family:Vision-Light; border-bottom: solid 1px #333; margin: 10px 0 30px 0; padding-bottom: 5px;">{{ city }}, {{ state }}</p>
+                    <p class="home-info-list">{{ city }}, {{ state }}</p>
                 </div>
             </div>
         </div>

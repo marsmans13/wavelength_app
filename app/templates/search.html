@@ -13,7 +13,7 @@
     </div>
     <br>
     <div class="row-fluid">
-        {% for user, photo, age in search_users %}
+        {% for user, photo, age, location in search_users %}
             <div class="col-lg-6">
                 <div class="inline-block" onmouseover="addUserInfo('userId{{ user.id }}')"
                      onmouseout="hideUserInfo('userId{{ user.id }}')">
@@ -27,15 +27,15 @@
                                 {% if not user.bio  %}
                                     <p class="light-txt">{{ user.bio }}</p>
                                 {% elif user.bio|length > 75 %}
-                                    <p class="light-txt">{{ user.bio[:85] }}...</p>
+                                    <p class="light-txt">{{ user.bio[:75] }}...</p>
                                 {% else %}
-                                    <p style="color:white; margin-left:15px">{{ user.bio }}</p>
+                                    <p class="light-txt">{{ user.bio }}</p>
                                 {% endif %}
                                 <div class="userInfo" id="userId{{ user.id }}">
                                     <p class="bold-txt">Special Interests</p>
                                     <p class="light-txt">{{ user.interests }}</p>
                                     <p class="bold-txt">Location</p>
-                                    <p class="light-txt">{{ user.zip }}</p>
+                                    <p class="light-txt">{{ location.place_name }}, {{ location.state_name }}</p>
                                 </div>
                             </div>
                         </div>

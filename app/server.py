@@ -4,6 +4,7 @@ import datetime
 import boto3
 import logging
 import requests
+import random
 from flask import (
     Blueprint, flash, g, redirect, render_template, session, url_for, request
 )
@@ -30,10 +31,16 @@ ACCESS_KEY = os.environ.get('ACCESS_KEY')
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 
+ice_breakers = ['What is the last thing you read?', 'What is your favorite thing to read about?',
+                'Who do you look up to most?', 'Do you listen to music, and if so, what kind?',
+                'If you could do any job in the world, what would it be?']
+
+
 @profile_bp.route('/home', methods=['POST', 'GET'])
 @login_required
 def home():
     user = get_user(session.get('email'))
+    print("USER ID", user.id)
 
     if request.method == 'POST':
         print('POST REQUEST SENT')
@@ -58,8 +65,8 @@ def home():
         db.session.add(user)
         db.session.commit()
     if not user.zip:
-        city = None
-        state = None
+        city = 'None'
+        state = 'None'
     else:
         location_pd = get_location(user.zip)
         city = location_pd.place_name
@@ -93,7 +100,7 @@ def search_users():
     user = get_user(session.get('email'))
 
     # https://www.zipcodeapi.com/API#radius
-    api_key = "xuPeObLIaJiQ4hDU35cbJ5WAa3XReh1FrbbZoljjpUcVusUUfnFTuDi88U95N9uS"
+    api_key = "A27iUnSKR0Xi8g5as2NFFWxz4W5JnVK7qeAHALfe2ZyTXaDKOYfivopeXlDYN4a6"
     zip_api_url = "https://www.zipcodeapi.com/rest/{api_key}/radius.{format}/{zip_code}/{distance}/{units}?minimal".format(
         api_key=api_key, format="json", zip_code=user.zip, distance="5", units="miles"
     )
@@ -101,8 +108,9 @@ def search_users():
     zips_nearby = [user.zip]
     try:
         zips_request = requests.get(zip_api_url)
-        print(zips_request.json())
-        zips_nearby = zips_request['zip_codes'] + [user.zip]
+        print(zips_request.text)
+        print(dir(zips_request))
+        zips_nearby = zips_request.json().get('zip_codes') + [user.zip]
         # returns {'zip_codes': ['30315', '30316'...]}
     except Exception as e:
         print(f'Zip code API request failed: {e}')
@@ -128,12 +136,14 @@ def search_users():
             photo = UserPhoto.query.filter_by(user_id=user.id).first()
             photo_url = 'https://spectrum-user-images.s3.us-east-2.amazonaws.com/{}'.format(photo.photo)
 
+            location_pd = get_location(user.zip)
+
             age = 0
             print(user.birthdate)
             if user.birthdate:
                 age = calculate_age(user.birthdate)
 
-            search_users.append((user, photo_url, age))
+            search_users.append((user, photo_url, age, location_pd))
 
     return render_template('search.html', users_nearby=users_nearby, search_users=search_users)
 
@@ -153,6 +163,13 @@ def user_profile(user_id):
             new_match = match_user(int(request.form['match_user_id']))
             if new_match:
                 flash("You have matched!")
+
+                ice_breaker = random.choice(ice_breakers)
+                love_bot = User.query.filter_by(id=10).first()
+                love_bot_message = Message(match_id=new_match.id, sender=love_bot.id, text=ice_breaker)
+                db.session.add(love_bot_message)
+                db.session.commit()
+
         elif request.form.get('pass_user_id'):
             pass_user(int(request.form['pass_user_id']))
             flash('You have passed.')
@@ -200,7 +217,7 @@ def match_user(user_id):
         db.session.add(new_match)
         db.session.commit()
 
-        return True
+        return new_match
 
 
 def pass_user(user_id):
@@ -222,25 +239,51 @@ def unmatch_user(user_id):
     match = Match.query.filter_by(user_1=int(user_id)).filter_by(user_2=user.id).first()
     if not match:
         match = Match.query.filter_by(user_2=int(user_id)).filter_by(user_1=user.id).first()
-    print("MATCH", match)
-    print(match.user_1, match.user_2)
 
     db.session.delete(match)
     db.session.commit()
 
     create_match = CreateMatch.query.filter_by(matcher=user.id).filter_by(matchee=int(user_id)).first()
-    print(create_match)
     create_match.matched = False
     db.session.add(create_match)
     db.session.commit()
 
     create_match_matchee = CreateMatch.query.filter_by(matcher=int(user_id)).filter_by(matchee=user.id).first()
-    print(create_match_matchee)
     create_match_matchee.matched = False
     db.session.add(create_match_matchee)
     db.session.commit()
 
     flash('Unmatched successfully.')
+
+    return redirect(url_for('profile_bp.show_matches'))
+
+
+@profile_bp.route('/block_user_<user_id>', methods=['GET', 'POST'])
+@login_required
+def block_user(user_id):
+    user = get_user(session.get('email'))
+
+    match_user = User.query.filter_by(id=int(user_id)).first()
+
+    match = Match.query.filter_by(user_1=int(user_id)).filter_by(user_2=user.id).first()
+    if not match:
+        match = Match.query.filter_by(user_2=int(user_id)).filter_by(user_1=user.id).first()
+
+    match.blocked = True
+    db.session.add(match)
+    db.session.commit()
+
+    create_match = CreateMatch.query.filter_by(matcher=user.id).filter_by(matchee=int(user_id)).first()
+    create_match.matched = False
+    db.session.add(create_match)
+    db.session.commit()
+
+    create_match_matchee = CreateMatch.query.filter_by(matcher=int(user_id)).filter_by(matchee=user.id).first()
+    create_match_matchee.matched = False
+    db.session.add(create_match_matchee)
+    db.session.commit()
+
+    flash('{} blocked.'.format(match_user.username))
 
     return redirect(url_for('profile_bp.show_matches'))
 
@@ -264,11 +307,12 @@ def send_message(user_id):
         message = Message(match_id=match.id,
                           sender=user.id,
                           text=text,
-                          timestamp=datetime.datetime.now())
+                          timestamp=datetime.datetime.utcnow())
         db.session.add(message)
         db.session.commit()
 
-    messages = Message.query.filter_by(match_id=match.id).all()
+    ice_breaker_message = Message.query.filter_by(match_id=match.id).filter_by(sender=10).first()
+    messages = Message.query.filter_by(match_id=match.id).filter(Message.sender != 10).all()
     user_photo = UserPhoto.query.filter_by(user_id=user.id).first()
     match_photo = UserPhoto.query.filter_by(user_id=profile.id).first()
 
@@ -294,7 +338,7 @@ def send_message(user_id):
 
     return render_template('messages.html', profile=profile, messages=messages, location=location_pd,
                            user_photo=user_photo_url, match_photo=match_photo_url, profile_photos=profile_photos,
-                           age=age)
+                           age=age, ice_breaker_message=ice_breaker_message)
 
 
 @profile_bp.route('/matches', methods=['GET', 'POST'])
@@ -312,18 +356,17 @@ def show_matches():
         photo_url = 'https://spectrum-user-images.s3.us-east-2.amazonaws.com/{}'.format(photo.photo)
 
         age = 0
-        print(mu.birthdate)
         if mu.birthdate:
             age = calculate_age(mu.birthdate)
 
         match_obj = Match.query.filter_by(user_1=mu.id).filter_by(user_2=user.id).first()
         if not match_obj:
             match_obj = Match.query.filter_by(user_2=mu.id).filter_by(user_1=user.id).first()
-        print("MATCH OBJECT:", match_obj)
 
-        messages = Message.query.filter_by(match_id=match_obj.id).all()
+        messages = Message.query.filter_by(match_id=match_obj.id).filter(Message.sender != 10).all()
         if messages:
             last_message = messages[-1]
+            print(last_message.timestamp)
         else:
             last_message = None
 

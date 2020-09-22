@@ -51,6 +51,8 @@ select option {
 
 #nav-item {
     color: black;
+    margin-top: 4px;
+    font-family: Vision-Bold;
 }
 
 #nav-item:hover {
@@ -131,14 +133,16 @@ select option {
 }
 
 .btn-cust {
-    padding: 5px 8px;
-    background-color: white;
-    font-weight: 600;
-    border-style: solid;
+    padding: 0.75em 1em;
+    background-color: #00BAC7;
+    font-weight: 700;
+    color: white;
+    border-style: none;
 }
 
 .btn-cust:hover {
-    color: gray;
+    box-shadow: 0 0 5px 3px rgba(0,0,0,0.15);
+    color: white;
 }
 
 .bio-box {
@@ -178,7 +182,7 @@ select option {
     background-color: #00BAC7;
     border-radius: 15px;
     margin: 0 0 0 0;
-    padding: 1em 1.5em 1em 1.5em;
+    padding: 1em 1.5em;
     width: 100px;
 }
 
@@ -213,16 +217,16 @@ select option {
 }
 
 .cropped-img-cir {
-    height: 200px; /* height of container */
-    width: 200px;
+    height: 150px; /* height of container */
+    width: 150px;
     object-fit: cover;
-    margin: 2px;
+    margin: 0 30px;
     border-radius: 100%;
     box-shadow: 0px 0px 5px 3px #eee;
 }
 
 .cropped-img-profile {
-    height: 300px; /* height of container */
+    height: 250px; /* height of container */
     object-fit: cover;
     margin: 2px;
     box-shadow: 0px 0px 5px 3px #eee;
@@ -294,7 +298,8 @@ select option {
     background-color: #00BAC7;
     color: white;
     border-radius: 10px;
-    font-weight: 700;
+    font-family: Vision-Bold;
+    border-style: none;
 }
 
 .login-btn {
@@ -381,7 +386,6 @@ select option {
 
 .bold-txt {
     font-family: 'Vision-Bold';
-    font-weight: 700;
     color: white;
     margin-left: 15px;
 }
@@ -425,17 +429,26 @@ select option {
     object-fit:cover;
 }
 
-.search-img-box:hover {
-    opacity: 0.8;
-}
-
 .search-img-info {
     position:absolute;
     bottom:20px;
-    background-color:rgba(50,50,50,0.4);
+    background-color: rgba(50,50,50,0.7);
     width:600px;
 }
 
-.search-img-info:hover {
-    background-color:rgba(50,50,50,0.7);
+.right-arrow {
+    width: 30px;
+    padding-bottom: 50px;
+    opacity: 0.5;
+}
+
+.right-arrow:hover {
+    opacity: 0.7;
+}
+
+.home-info-list {
+    font-family: Vision-Light;
+    border-bottom: solid 1px #333;
+    margin: 10px 0 40px 0;
+    padding-bottom: 5px;
 }

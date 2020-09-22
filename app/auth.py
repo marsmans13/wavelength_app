@@ -19,30 +19,23 @@ def register():
         username = request.form['username']
         password = request.form['password']
         email = request.form['email']
-        age = request.form['age']
         gender = request.form['gender']
         birthdate = request.form['birthdate']
-        if age:
-            age = int(age)
+
         error = None
         print("form received")
-
-        if not username:
-            error = 'Username is required'
-        elif not password:
-            error = 'Password is required'
 
         user = User.query.filter_by(email=email).first()
         if user:
             error = 'Email {} already exists'.format(email)
 
         if error is None:
-            user = User(username=username, password=password, email=email, age=age, gender=gender, birthdate=birthdate)
+            user = User(username=username, password=password, email=email, gender=gender, birthdate=birthdate)
             db.session.add(user)
             db.session.commit()
 
-            session['username'] = username
-            print("user added")
+            session['email'] = email
+            print("user email added to session")
             return redirect(url_for('auth_bp.login'))
         flash(error)
 

@@ -7,7 +7,7 @@
 <div class="container-fluid">
     <div class="row-fluid">
         <div class="col-lg-6">
-            <div class="message-box-old">
+            <div class="message-box-old" id="messageBoxOld">
                 <div>
                     <p class="text-bubble-center" style="text-align:center;">
                         <span style="font-family:Vision-Bold">love.bot</span>
@@ -16,17 +16,20 @@
                         <span style="font-family:Vision-Light">
                             Congrats, you and {{ profile.username }} have matched! Here's an ice breaker for you:
                             <br>
-                            What is your favorite topic to read about?
+                            {% if ice_breaker_message %}
+                                {{ ice_breaker_message.text }}
+                            {% else %}
+                                What is your favorite topic to read about?
+                            {% endif %}
                         </span>
                     </p>
                 </div>
                 {% for message in messages %}
-                <div style="padding:10px;">
+                <div id="messageBoxId" style="padding:10px;">
                     {% if message.sender == profile.id %}
                         <div class="row" style="margin-left:10px">
-                            <p style="color:#888; font-size:10px; text-align:left;">
-                                {{ message.timestamp.time().strftime('%H:%M') }}
-                            </p>
+                            <p class="timestamp" id="{{ profile.id }}" hidden>{{ message.timestamp }}</p>
+                            <p id="timestamp_tz{{ profile.id }}" style="color:#888; font-size:10px; text-align:left;"></p>
                             <div>
                                 <img src="{{ match_photo }}" class="message-box-img inline-block" alt="profile">
                                 <p class="text-bubble-left">{{ message.text }}</p>
@@ -67,14 +70,14 @@
                     <form action="{{ url_for('profile_bp.unmatch_user', user_id=profile.id) }}" method="post">
                         <input type="submit" value="unmatch" style="width:75px; text-align:center;">
                     </form>
-                    <form action="#" method="post">
+                    <form action="{{ url_for('profile_bp.block_user', user_id=profile.id) }}" method="post">
                         <input type="submit" value="block" style="width:75px; text-align:center;">
                     </form>
                 </div>
             </div>
 
-            <div style="display:flex; align-items: center; margin-top:30px">
-                {% for photo in profile_photos %}
+            <div style="display: flex; align-items: center; margin-top:30px; flex-wrap:wrap; justify-content:center">
+                {% for photo in profile_photos[:3] %}
                     <img class="inline-block cropped-img" src="{{ photo }}"
                          alt="profile photo" style="border-radius:20px; margin-right:20px">
                 {% endfor %}
@@ -91,7 +94,7 @@
                 <p class="inline-block icon-info-bar">
                     <img src="/static/work.svg" alt="job icon" style="width:20px; margin-right:10px">student
                 </p>
-                <p class="inline-block icon-info-bar">
+                <p class="inline-block icon-info-bar" style="border-style:none;">
                     <img src="/static/eye.svg" alt="eye icon" style="width:20px; margin-right:10px">friends
                 </p>
                 <hr style="margin-top:5px; color: #ccc">
@@ -119,7 +122,10 @@
 </div>
 <script>
     window.onload = function() {
-      document.getElementById('options').style.display = 'none';
+        document.getElementById('options').style.display = 'none';
+        var messageBox = document.getElementsByClassName('message-box-old')[0];
+        var height = $('#messageBoxOld').height();
+        messageBox.scrollTo(0, height);
     };
 
     let optionsBtn = document.getElementById('optionsBtn');
@@ -132,5 +138,20 @@
         x.style.display = "none";
       }
     }
+
+    let dateobj = document.getElementsByClassName('timestamp');
+    console.log(dateobj);
+    let dateobj1 = dateobj[0].textContent;
+
+    for (i=0; i < dateobj.length; i++) {
+        let id = dateobj[i].id
+        let ts = new Date(dateobj[i].textContent);
+        ts.toString();
+        let tz_date_div = document.getElementById('timestamp_tz' + id);
+        let hours = ts.getHours();
+        console.log('hours' + hours);
+        tz_date_div.innerHTML += ts.getHours() + ":" + (ts.getMinutes()<10?'0':'') + ts.getMinutes();
+    }
+
 </script>
 {% endblock %}
