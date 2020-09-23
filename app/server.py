@@ -100,7 +100,8 @@ def search_users():
     user = get_user(session.get('email'))
 
     # https://www.zipcodeapi.com/API#radius
-    api_key = "A27iUnSKR0Xi8g5as2NFFWxz4W5JnVK7qeAHALfe2ZyTXaDKOYfivopeXlDYN4a6"
+    api_key = os.environ.get('ZIP_API_KEY')
+    print(api_key)
     zip_api_url = "https://www.zipcodeapi.com/rest/{api_key}/radius.{format}/{zip_code}/{distance}/{units}?minimal".format(
         api_key=api_key, format="json", zip_code=user.zip, distance="5", units="miles"
     )
