@@ -43,19 +43,20 @@ select option {
     border-right: none;
     border-left: none;
     border-top: none;
-    border-bottom: solid;
+    border-bottom: solid 1px #ccc;
     border-radius: 0px;
-    border-color: #ccc;
-    border-width: 1px;
+    padding-bottom: 30px;
 }
 
-#nav-item {
+#nav-item-id {
     color: black;
-    margin-top: 4px;
     font-family: Vision-Bold;
+    text-decoration: none;
+    margin-right: 50px;
+    font-size: 15px;
 }
 
-#nav-item:hover {
+#nav-item-id:hover {
     color: gray;
 }
 
@@ -292,6 +293,8 @@ select option {
 
 .img-container {
     position: relative;
+    width: 200px;
+    height: 250px;
 }
 
 #update-btn {
@@ -352,7 +355,7 @@ select option {
   margin: auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 50%;
+  width: 60%
 }
 
 /* The Close Button */
@@ -424,16 +427,16 @@ select option {
 }
 
 .search-img {
-    width:600px;
-    height:400px;
-    object-fit:cover;
+    width: 750px;
+    height: 450px;
+    object-fit: cover;
 }
 
 .search-img-info {
-    position:absolute;
-    bottom:20px;
+    position: absolute;
+    bottom: 20px;
     background-color: rgba(50,50,50,0.7);
-    width:600px;
+    width: 750px;
 }
 
 .right-arrow {
@@ -451,4 +454,11 @@ select option {
     border-bottom: solid 1px #333;
     margin: 10px 0 40px 0;
     padding-bottom: 5px;
+}
+
+.container-shadow-box {
+    margin: 40px 10%;
+    box-shadow: 0px 0px 10px 0 rgba(0,0,0,0.1);
+    padding:0 20px 40px 20px;
+    border-radius: 30px;
 }

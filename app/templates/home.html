@@ -4,9 +4,9 @@
 {% endblock %}
 
 {% block content %}
-<div class="container-fluid" style="margin:20px 150px; box-shadow: 0px 0px 10px 0 rgba(0,0,0,0.1); padding:0 20px 40px 20px; border-radius: 30px;">
+<div class="container-fluid container-shadow-box">
     <div class="row" style="margin: 20px 0;">
-        <div class="col-lg-6">
+        <div class="col-lg-6 col-xs-12">
             <h2 style="font-family:Vision-Bold;">{{ user.username }}</h2>
         </div>
     </div>
@@ -20,14 +20,14 @@
                                  src="https://spectrum-user-images.s3.us-east-2.amazonaws.com/{{ photos[i].photo }}"
                                  alt="profile photo">
                             <div class="delete_btn">
-                                <a href="{{ url_for('profile_bp.delete_image', photo_id=photos[i].id) }}">Remove</a>
+                                <a href="{{ url_for('profile_bp.delete_image', photo_id=photos[i].id) }}">remove</a>
                             </div>
                         </div>
                     {% else %}
                         <div class="img-container inline-block">
                             <img class="inline-block empty-img" src="/static/plain-white-background.jpg">
                             <div class="delete_btn">
-                                <button class="myBtn" style="background-color: transparent; border-style:none;">Add Photo</button>
+                                <a class="myBtn" href="#" style="background-color:transparent; border-style:none;">add photo</a>
                             </div>
                         </div>
                     {% endif %}
@@ -100,7 +100,8 @@
                           <input class="form-control" style="margin-bottom:10px; color: #777; border-radius:10px" name="birthdate" id="birthdate" type="date">
                           <br/>
                           <label for="zip">Zip Code</label>
-                          <input class="form-control" style="margin-bottom:10px; color: #777; border-radius:10px" name="zip" id="zip" value="{{ user.zip }}">
+                          <input class="form-control" style="margin-bottom:10px; color: #777; border-radius:10px"
+                                 type="text" minlength="5" maxlength="5" name="zip" id="zip" value="{{ user.zip }}">
                           <br/>
                           <input class="form-control" id="update-btn" type="submit" value="Update">
                       </form>

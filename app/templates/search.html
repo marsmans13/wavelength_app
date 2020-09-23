@@ -5,22 +5,26 @@
 {% endblock %}
 
 {% block content %}
-<div class="container-fluid" style="margin:0 125px;">
+<div class="container-fluid">
     <div class="row">
+        <div class="col-lg-3"></div>
         <div class="col-lg-6">
             <h2 style="font-family:Vision-Bold; margin-left:15px;">People Near You</h2>
         </div>
+        <div class="col-lg-3"></div>
     </div>
     <br>
-    <div class="row-fluid">
-        {% for user, photo, age, location in search_users %}
+    {% for user, photo, age, location in search_users %}
+        <div class="row">
+            <div class="col-lg-3"></div>
             <div class="col-lg-6">
                 <div class="inline-block" onmouseover="addUserInfo('userId{{ user.id }}')"
                      onmouseout="hideUserInfo('userId{{ user.id }}')">
                     <a class="user-list" href="{{ url_for('profile_bp.user_profile', user_id=user.id) }}">
-
-                        <div class="search-img-box" style="width:80%; margin-bottom:20px;">
+                        <div class="search-img-box" style="margin: 20px 0">
+                            <div style="width:100%">
                             <img class="search-img" src="{{ photo }}" alt="profile photo">
+                            </div>
                             <div class="search-img-info">
                                 <h3 class="bold-txt" style="text-shadow: 1px 1px #666;">{{ user.username }}, {{ age }}</h3>
                                 <p class="bold-txt">Bio</p>
@@ -43,9 +47,11 @@
                     </a>
                 </div>
             </div>
-        {% endfor %}
-    </div>
+            <div class="col-lg-3"></div>
+        </div>
+    {% endfor %}
 
+</div>
 <script>
     window.onload = function() {
         var x = document.getElementsByClassName('userInfo');
@@ -64,5 +70,5 @@
     }
 
 </script>
-</div>
+
 {% endblock %}

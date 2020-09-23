@@ -5,10 +5,11 @@
 {% endblock %}
 
 {% block content %}
-<div style="margin:0 auto; width:30%; align-items:center;">
-  <div class="list-item-box bio-box" style="text-align:left; padding:20px;">
-    <div class="row">
-      <div class="col-lg-12">
+<div style="margin:0 auto; align-items:center;">
+  <div class="row">
+    <div class="col-lg-4 col-md-3 col-sm-1 col-xs-0"></div>
+    <div class="col-lg-4 col-md-6 col-sm-10 col-xs-12">
+      <div class="list-item-box bio-box" style="text-align:left; padding:20px;">
         <h2 style="text-align:center">Log In</h2>
         <form method="post">
           <label for="email">Email</label>
@@ -21,6 +22,7 @@
         <a href="{{ url_for('auth_bp.register') }}">Register</a>
       </div>
     </div>
+    <div class="col-lg-4 col-md-3 col-sm-1 col-xs-0"></div>
   </div>
 </div>
 

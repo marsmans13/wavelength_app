@@ -145,8 +145,11 @@
         ts.toString();
         let tz_date_div = document.getElementById('timestamp_tz' + id);
         let hours = ts.getHours();
+        let ampm = hours >= 12 ? 'pm' : 'am'
+        hours = hours % 12;
+        hours = hours ? hours : 12;
         console.log('hours' + hours);
-        tz_date_div.innerHTML += ts.getHours() + ":" + (ts.getMinutes()<10?'0':'') + ts.getMinutes();
+        tz_date_div.innerHTML += hours + ":" + (ts.getMinutes()<10?'0':'') + ts.getMinutes() + ' ' + ampm;
     }
 
     let dateobj_right = document.getElementsByClassName('timestamp_right');
@@ -158,8 +161,11 @@
         r_ts.toString();
         let r_tz_date_div = document.getElementById('timestamp_tz_' + r_id);
         let r_hours = r_ts.getHours();
+        let r_ampm = r_hours >= 12 ? 'pm' : 'am'
+        r_hours = r_hours % 12;
+        r_hours = r_hours ? r_hours : 12;
         console.log('hours' + r_hours);
-        r_tz_date_div.innerHTML += r_ts.getHours() + ":" + (r_ts.getMinutes()<10?'0':'') + r_ts.getMinutes();
+        r_tz_date_div.innerHTML += r_hours + ":" + (r_ts.getMinutes()<10?'0':'') + r_ts.getMinutes() + ' ' + r_ampm;
     }
 
 </script>
