@@ -452,10 +452,12 @@ select option {
     position: relative;
     margin-left: 0;
     margin-right: 0;
-    height: 450px; width: 100%;
+    height: 450px;
+    width: 100%;
     background-repeat: no-repeat;
     background-size: cover;
     margin-bottom: 20px;
+    background-color: #eee;
 }
 
 .search-img {
