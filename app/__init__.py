@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
@@ -26,6 +26,12 @@ from app.server import profile_bp
 
 app.register_blueprint(auth_bp, url_prefix='/auth')
 app.register_blueprint(profile_bp, url_prefix='/profile')
+
+
+@app.route('/', methods=['GET', 'POST'])
+def reroute_home():
+    return redirect(url_for('auth_bp.login'))
+
 
 if __name__ == "__main__":
     # connect_to_db(app)
