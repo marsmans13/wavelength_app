@@ -100,7 +100,7 @@ def search_users():
     user = get_user(session.get('email'))
 
     # https://www.zipcodeapi.com/API#radius
-    api_key = os.environ.get('ZIP_API_KEY_TEST')
+    api_key = os.environ.get('ZIP_API_KEY')
     print(api_key)
     zip_api_url = "https://www.zipcodeapi.com/rest/{api_key}/radius.{format}/{zip_code}/{distance}/{units}?minimal".format(
         api_key=api_key, format="json", zip_code=user.zip, distance="5", units="miles"
@@ -109,13 +109,12 @@ def search_users():
     zips_nearby = [user.zip]
     try:
         zips_request = requests.get(zip_api_url)
-        print(zips_request.text)
-        print(dir(zips_request))
         zips_nearby = zips_request.json().get('zip_codes') + [user.zip]
         # returns {'zip_codes': ['30315', '30316'...]}
     except Exception as e:
         print(f'Zip code API request failed: {e}')
 
+    print("ZIPS NEARBY:", zips_nearby)
     users_nearby = User.query.filter(User.zip.in_(zips_nearby)).filter(User.email != user.email).all()
     print(users_nearby)
 
@@ -128,6 +127,7 @@ def search_users():
     awaiting_matches = []
     for match in create_matches:
         awaiting_matches.append(match.matchee)
+    print("AWAITING MATCHES:", awaiting_matches)
 
     search_users = []
     for user in users_nearby:

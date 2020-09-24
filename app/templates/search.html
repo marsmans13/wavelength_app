@@ -7,25 +7,31 @@
 {% block content %}
 <div class="container-fluid">
     <div class="row">
-        <div class="col-lg-3"></div>
-        <div class="col-lg-6">
-            <h2 style="font-family:Vision-Bold; margin-left:15px;">People Near You</h2>
+        <div class="col-lg-3 col-sm-2 col-xs-1"></div>
+        <div class="col-lg-6 col-sm-8 col-xs-10">
+            <h2 style="font-family:Vision-Bold;">People Near You</h2>
         </div>
-        <div class="col-lg-3"></div>
+        <div class="col-lg-3 col-sm-2 col-xs-1"></div>
     </div>
     <br>
+    {% if not search_users %}
+        <div class="row">
+            <div class="col-lg-3 col-sm-2 col-xs-1"></div>
+            <div class="col-lg-6 col-sm-8 col-xs-10">
+                <p>No users to display</p>
+            </div>
+            <div class="col-lg-3 col-sm-2 col-xs-1"></div>
+        </div>
+    {% endif %}
     {% for user, photo, age, location in search_users %}
         <div class="row">
-            <div class="col-lg-3"></div>
-            <div class="col-lg-6">
-                <div class="inline-block" onmouseover="addUserInfo('userId{{ user.id }}')"
+            <div class="col-lg-3 col-sm-2 col-xs-1"></div>
+            <div class="col-lg-6 col-sm-8 col-xs-10">
+                <div class="inline-block search-img-box" style="background-image: url('{{ photo }}');" onmouseover="addUserInfo('userId{{ user.id }}')"
                      onmouseout="hideUserInfo('userId{{ user.id }}')">
                     <a class="user-list" href="{{ url_for('profile_bp.user_profile', user_id=user.id) }}">
-                        <div class="search-img-box" style="margin: 20px 0">
-                            <div style="width:100%">
-                            <img class="search-img" src="{{ photo }}" alt="profile photo">
-                            </div>
-                            <div class="search-img-info">
+                        <div style="margin: 20px 0;">
+                            <div class="search-img-info" style="margin-right:20px;">
                                 <h3 class="bold-txt" style="text-shadow: 1px 1px #666;">{{ user.username }}, {{ age }}</h3>
                                 <p class="bold-txt">Bio</p>
                                 {% if not user.bio  %}
@@ -43,11 +49,10 @@
                                 </div>
                             </div>
                         </div>
-
                     </a>
                 </div>
             </div>
-            <div class="col-lg-3"></div>
+            <div class="col-lg-3 col-sm-2 col-xs-1"></div>
         </div>
     {% endfor %}
 
@@ -68,6 +73,8 @@
     function hideUserInfo(x) {
         document.getElementById(x).style.display = 'none';
     }
+
+
 
 </script>
 

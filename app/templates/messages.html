@@ -5,8 +5,8 @@
 
 {% block content %}
 <div class="container-fluid">
-    <div class="row-fluid">
-        <div class="col-lg-6">
+    <div class="row">
+        <div class="col-lg-6 col-sm-12">
             <div class="message-box-old" id="messageBoxOld">
                 <div>
                     <p class="text-bubble-center" style="text-align:center;">
@@ -27,21 +27,29 @@
                 {% for message in messages %}
                 <div id="messageBoxId" style="padding:10px;">
                     {% if message.sender == profile.id %}
-                        <div class="row" style="margin-left:10px">
-                            <p class="timestamp" id="{{ message.id }}" hidden>{{ message.timestamp }}</p>
-                            <p id="timestamp_tz{{ message.id }}" style="color:#888; font-size:10px; text-align:left;"></p>
-                            <div>
+                        <div class="row" style="margin-left:0">
+                            <div class="col-md-2 col-sm-3 col-xs-3">
+                                <p class="timestamp" id="{{ message.id }}" hidden>{{ message.timestamp }}</p>
+
                                 <img src="{{ match_photo }}" class="message-box-img inline-block" alt="profile">
-                                <p class="text-bubble-left">{{ message.text }}</p>
                             </div>
+                            <div class="col-md-6 col-sm-5 col-xs-9">
+                                <p id="timestamp_tz{{ message.id }}" style="color:#888; font-size:10px; text-align:left;"></p>
+                                <p class="text-bubble-left2">{{ message.text }}</p>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-0"></div>
                         </div>
                     {% else %}
-                        <div class="row" style="margin-right:10px">
-                            <p class="timestamp_right" id="right{{ message.id }}" hidden>{{ message.timestamp }}</p>
-                            <p id="timestamp_tz_right{{ message.id }}" style="color:#888; font-size:10px; text-align:right;"></p>
-                            <div class="inline-block" style="float:right;">
-                                <p class="text-bubble-right">{{ message.text }}</p>
-                                <img src="{{ user_photo }}" class="message-box-img" alt="profile">
+                        <div class="row" style="margin-right:0">
+                            <div class="col-md-4 col-sm-4 col-xs-0"></div>
+                            <div class="col-md-6 col-sm-5 col-xs-9">
+                                <p id="timestamp_tz_right{{ message.id }}" style="color:#888; font-size:10px; text-align:right;"></p>
+                                <p class="text-bubble-right2">{{ message.text }}</p>
+                            </div>
+                            <div class="col-md-2 col-sm-3 col-xs-3">
+                                <p class="timestamp_right" id="right{{ message.id }}" hidden>{{ message.timestamp }}</p>
+
+                                <img src="{{ user_photo }}" class="message-box-img" alt="profile" style="float: right">
                             </div>
                         </div>
                     {% endif %}
@@ -49,12 +57,13 @@
                 {% endfor %}
             </div>
             <form method="post">
-                <input class="text-input" name="text" id="text">
                 <input class="text-input-btn btn-cust" type="submit" value="send">
+                <input class="text-input" name="text" id="text" style="text-align:right;">
+
             </form>
         </div>
 
-        <div class="col-lg-6" style="margin-top:0px; padding-left:50px">
+        <div class="col-lg-6 col-sm-12" style="margin-top:0px; padding-left:50px">
             <h1 class="inline-block">{{ profile.username }}</h1>
 
             <div class="inline-block">
@@ -98,8 +107,8 @@
                 <hr style="margin-top:5px; color: #ccc">
             </div>
 
-            <div class="bio-box" style="margin:30px 10px 20px 10px;">
-                <div class="inline-block" style="float:left; text-align:left; width: 250px;">
+            <div class="bio-box" style="margin:30px 0 20px 0;">
+                <div class="inline-block" style="float:left; text-align:left; width: 40%;">
                     <h3 class="bio-title">Bio</h3>
                     <p class="bio-par">{{ profile.bio }}</p>
 
@@ -107,7 +116,7 @@
                     <p class="bio-par">{{ location.place_name }}, {{ location.state_name }}</p>
                 </div>
 
-                <div class="inline-block" style="width: 250px;">
+                <div class="inline-block" style="width: 40%;">
                     <h3 class="bio-title">Interests</h3>
                     <p class="bio-par">{{ profile.interests }}</p>
 
