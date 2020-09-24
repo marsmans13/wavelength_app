@@ -18,7 +18,7 @@ def register():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        email = request.form['email']
+        email = request.form['email'].lower()
         gender = request.form['gender']
         birthdate = request.form['birthdate']
 
@@ -53,7 +53,7 @@ def register():
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        email = request.form['email']
+        email = request.form['email'].lower()
         password = request.form['password']
         error = None
         user = User.query.filter_by(email=email).first()
