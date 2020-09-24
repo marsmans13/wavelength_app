@@ -141,7 +141,7 @@
 
     for (i=0; i < dateobj.length; i++) {
         let id = dateobj[i].id
-        let ts = new Date(dateobj[i].textContent);
+        let ts = new Date(dateobj[i].textContent + 'UTC');
         ts.toString();
         let tz_date_div = document.getElementById('timestamp_tz' + id);
         let hours = ts.getHours();
@@ -157,7 +157,7 @@
 
     for (i=0; i < dateobj_right.length; i++) {
         let r_id = dateobj_right[i].id
-        let r_ts = new Date(dateobj_right[i].textContent);
+        let r_ts = new Date(dateobj_right[i].textContent + 'UTC');
         r_ts.toString();
         let r_tz_date_div = document.getElementById('timestamp_tz_' + r_id);
         let r_hours = r_ts.getHours();
