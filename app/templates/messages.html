@@ -6,7 +6,8 @@
 {% block content %}
 <div class="container-fluid">
     <div class="row">
-        <div class="col-lg-6 col-sm-12">
+        <div class="col-xs-0"></div>
+        <div class="col-lg-6 col-sm-12 col-xs-12">
             <div class="message-box-old" id="messageBoxOld">
                 <div>
                     <p class="text-bubble-center" style="text-align:center;">
@@ -61,8 +62,10 @@
                 <input class="text-input" name="text" id="text" style="text-align:right;">
             </form>
         </div>
+        <div class="col-xs-0"></div>
 
-        <div class="col-lg-6 col-sm-12" style="margin-top:0px; padding-left:50px">
+        <div class="col-xs-0"></div>
+        <div class="col-lg-6 col-sm-12 col-xs-12" style="margin-top:0px;">
             <h1 class="inline-block">{{ profile.username }}</h1>
 
             <div class="inline-block">
@@ -85,7 +88,7 @@
             <div style="display: flex; align-items: center; margin-top:30px; flex-wrap:wrap; justify-content:center">
                 {% for photo in profile_photos[:3] %}
                     <img class="inline-block cropped-img" src="{{ photo }}"
-                         alt="profile photo" style="border-radius:20px; margin-right:20px">
+                         alt="profile photo" style="border-radius:20px; margin-right:10px; margin-left:10px;">
                 {% endfor %}
             </div>
             <div style="display:block; margin-top:15px; margin-bottom:0;">
@@ -124,6 +127,7 @@
                 </div>
             </div>
         </div>
+        <div class="col-xs-0"></div>
     </div>
 </div>
 <script>
