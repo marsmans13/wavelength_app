@@ -45,7 +45,11 @@ select option {
     border-top: none;
     border-bottom: solid 1px #ccc;
     border-radius: 0px;
-    padding-bottom: 30px;
+    padding-bottom: 10px;
+}
+
+.nav-item {
+    margin-top: 20px;
 }
 
 #nav-item-id {
@@ -150,7 +154,7 @@ select option {
     border-style: solid;
     border-color: #ccc;
     border-width: 1px;
-    border-radius: 10px;
+    border-radius: 30px;
 }
 
 .btn-cust {
@@ -493,6 +497,6 @@ select option {
 .container-shadow-box {
     margin: 40px 10%;
     box-shadow: 0px 0px 10px 0 rgba(0,0,0,0.1);
-    padding:0 20px 40px 20px;
+    padding: 0 20px 40px 20px;
     border-radius: 30px;
 }

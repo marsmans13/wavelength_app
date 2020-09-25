@@ -12,33 +12,34 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 <body style="background-color: #fff;">
-  <nav class="navbar navbar-expand-lg navbar-light bg-light" id="navbar-cust">
-    <a class="navbar-brand" href="{{ url_for('profile_bp.home') }}"><img src="/static/IMG_3606.JPG" alt="wavelength" style="width:175px; margin-top:0"></a>
-    <button class="navbar-toggler inline-block" type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-            aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"><img src="/static/menu.svg" alt="menu" style="width: 15px; opacity: 0.7;"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarSupportedContent" style="margin-top:15px;">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item" style="list-style: none;">
-          <a id="nav-item-id" class="nav-link" href="{{ url_for('profile_bp.home') }}">home</a>
-        </li>
-        <li class="nav-item" style="list-style: none;">
-          <a id="nav-item-id" class="nav-link" href="{{ url_for('profile_bp.search_users') }}">search</a>
-        </li>
-        <li class="nav-item" style="list-style: none;">
-          <a id="nav-item-id" class="nav-link" href="{{ url_for('profile_bp.show_matches') }}">matches</a>
-        </li>
-        <li class="nav-item" style="list-style: none;">
-          <a id="nav-item-id" class="nav-link" href="{{ url_for('auth_bp.logout') }}">log out</a>
-        </li>
-      </ul>
-    </div>
-  </nav>
-  <div class="loader"></div>
   <div class="container-fluid bg-text">
+    <div class="row">
+        <nav class="navbar navbar-light bg-light" id="navbar-cust" style="">
+          <div class="col-lg-2 col-md-3 col-sm-3 col-xs-12" style="margin-bottom: 20px;">
+            <a class="navbar-brand" href="{{ url_for('profile_bp.home') }}">
+              <img src="/static/IMG_3606.JPG" alt="wavelength" style="width:175px; margin-top:0">
+            </a>
+          </div>
+            <div class="col-sm-0 col-xs-1"></div>
+            <div class="col-lg-10 col-md-9 col-sm-9 col-xs-11" id="navbarSupportedContent" style="margin-top:15px;">
+              <ul class="navbar-nav mr-auto" style="padding-left: 0;">
+                <li class="nav-item" style="list-style: none;">
+                  <a id="nav-item-id" class="nav-link" href="{{ url_for('profile_bp.home') }}">home</a>
+                </li>
+                <li class="nav-item" style="list-style: none;">
+                  <a id="nav-item-id" class="nav-link" href="{{ url_for('profile_bp.search_users') }}">search</a>
+                </li>
+                <li class="nav-item" style="list-style: none;">
+                  <a id="nav-item-id" class="nav-link" href="{{ url_for('profile_bp.show_matches') }}">matches</a>
+                </li>
+                <li class="nav-item" style="list-style: none;">
+                  <a id="nav-item-id" class="nav-link" href="{{ url_for('auth_bp.logout') }}">log out</a>
+                </li>
+              </ul>
+            </div>
+        </nav>
+    </div>
+  <div class="loader"></div>
     <section class="content">
       <header>
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -60,6 +61,10 @@
             document.querySelector("body").style.visibility = "visible";
         }
     };
+
+    function navResize() {
+
+    }
   </script>
 </body>
 </html>
