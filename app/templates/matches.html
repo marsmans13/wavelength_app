@@ -73,25 +73,18 @@
         ts.toString();
         let hours = ts.getHours();
         let ampm = hours >= 12 ? 'pm' : 'am'
-        hours = hours % 12;
-        hours = hours ? hours : 12;
+        if (hours > 12) {
+            hours = hours - 12;
+        }
+        minutes = ts.getMinutes();
+        if (minutes < 10) {
+            minutes = '0' + minutes.toString();
+        }
         console.log('hours' + hours);
         let tz_date_div = document.getElementById('timestamp_tz' + id);
-        tz_date_div.innerHTML += hours + ":" + (ts.getMinutes()<10?'0':'') + ts.getMinutes() +  ampm;
+        tz_date_div.innerHTML = hours.toString() + ":" + minutes +  ampm;
     }
 
-    let ts = new Date(dateobj1.concat('UTC'));
-    ts.toString();
-    let hours = ts.getHours();
-        let ampm = hours >= 12 ? 'pm' : 'am'
-        hours = hours % 12;
-        hours = hours ? hours : 12;
-    let minutes = ts.getMinutes();
-    if (minutes < 10) {
-        minutes = '0' + minutes;
-    }
-    let tz_date_div = document.getElementById('timestamp_tz');
-    tz_date_div.innerHTML += ts.getHours() + ":" + minutes + ' ' + ampm;
 
     console.log(date1.getTimezoneOffset());
     // expected output: your local timezone offset in minutes

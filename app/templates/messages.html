@@ -159,13 +159,14 @@
         let tz_date_div = document.getElementById('timestamp_tz' + id);
         let hours = ts.getHours();
         let ampm = hours >= 12 ? 'pm' : 'am'
-        hours = hours % 12;
-        hours = hours ? hours : 12;
+        if (hours > 12) {
+            hours = hours - 12;
+        }
         minutes = ts.getMinutes();
         if (minutes < 10) {
-            minutes = '0' + minutes;
+            minutes = '0' + minutes.toString();
         }
-        tz_date_div.innerHTML = hours + ":" + minutes + ' ' + ampm;
+        tz_date_div.innerHTML = hours.toString() + ":" + minutes + ' ' + ampm;
     }
 
     let dateobj_right = document.getElementsByClassName('timestamp_right');
@@ -178,14 +179,15 @@
         let r_tz_date_div = document.getElementById('timestamp_tz_' + r_id);
         let r_hours = r_ts.getHours();
         let r_ampm = r_hours >= 12 ? 'pm' : 'am'
-        r_hours = r_hours % 12;
-        r_hours = r_hours ? r_hours : 12;
+        if (r_hours > 12) {
+            r_hours = r_hours - 12;
+        }
         r_minutes = r_ts.getMinutes();
         if (r_minutes < 10) {
-            r_minutes = '0' + r_minutes;
+            r_minutes = '0' + r_minutes.toString();
         }
         console.log('hours' + r_hours);
-        r_tz_date_div.innerHTML += r_hours + ":" + r_minutes + ' ' + r_ampm;
+        r_tz_date_div.innerHTML = r_hours.toString() + ":" + r_minutes + ' ' + r_ampm;
     }
 
 </script>
