@@ -29,25 +29,25 @@
                 <div id="messageBoxId" style="padding:10px;">
                     {% if message.sender == profile.id %}
                         <div class="row" style="margin-left:0">
-                            <div class="col-md-2 col-sm-3 col-xs-3">
+                            <div class="col-md-1 col-sm-2 col-xs-3" style="padding-left: 0; padding-right: 0">
                                 <p class="timestamp" id="{{ message.id }}" hidden>{{ message.timestamp }}</p>
 
                                 <img src="{{ match_photo }}" class="message-box-img inline-block" alt="profile">
                             </div>
-                            <div class="col-md-6 col-sm-5 col-xs-9">
+                            <div class="col-md-6 col-sm-6 col-xs-8">
                                 <p id="timestamp_tz{{ message.id }}" style="color:#888; font-size:10px; text-align:left;"></p>
                                 <p class="text-bubble-left2">{{ message.text }}</p>
                             </div>
-                            <div class="col-md-4 col-sm-4 col-xs-0"></div>
+                            <div class="col-md-5 col-sm-4 col-xs-1"></div>
                         </div>
                     {% else %}
                         <div class="row" style="margin-right:0">
-                            <div class="col-md-4 col-sm-4 col-xs-0"></div>
-                            <div class="col-md-6 col-sm-5 col-xs-9">
+                            <div class="col-md-5 col-sm-4 col-xs-1"></div>
+                            <div class="col-md-6 col-sm-6 col-xs-8">
                                 <p id="timestamp_tz_right{{ message.id }}" style="color:#888; font-size:10px; text-align:right;"></p>
                                 <p class="text-bubble-right2">{{ message.text }}</p>
                             </div>
-                            <div class="col-md-2 col-sm-3 col-xs-3">
+                            <div class="col-md-1 col-sm-2 col-xs-3" style="padding-left:0; padding-right:0;">
                                 <p class="timestamp_right" id="right{{ message.id }}" hidden>{{ message.timestamp }}</p>
 
                                 <img src="{{ user_photo }}" class="message-box-img" alt="profile" style="float: right">

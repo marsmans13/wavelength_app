@@ -45,7 +45,6 @@ select option {
     border-top: none;
     border-bottom: solid 1px #ccc;
     border-radius: 0px;
-    padding-bottom: 10px;
 }
 
 .nav-item {
@@ -182,7 +181,7 @@ select option {
     border-style: none;
     border-radius: 15px;
     background-color: #eee;
-    width: 80%;
+    width: 75%;
     height: 40px;
     margin-top: 10px;
     margin-right: 10px;
@@ -261,8 +260,8 @@ select option {
 }
 
 .message-box-img {
-    height: 75px; /* height of container */
-    width: 75px;
+    height: 60px; /* height of container */
+    width: 60px;
     object-fit: cover;
     margin: 2px;
     border-radius: 100%;
@@ -495,7 +494,7 @@ select option {
 }
 
 .container-shadow-box {
-    margin: 40px 10%;
+    margin: 40px 0;
     box-shadow: 0px 0px 10px 0 rgba(0,0,0,0.1);
     padding: 0 20px 40px 20px;
     border-radius: 30px;
