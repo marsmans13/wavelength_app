@@ -9,9 +9,29 @@
     <div class="row">
         <div class="col-lg-3 col-sm-2 col-xs-1"></div>
         <div class="col-lg-6 col-sm-8 col-xs-10">
-            <h2 style="font-family:Vision-Bold;">People Near You</h2>
+            <h2 class="inline-block" style="font-family:Vision-Bold;">People Near You</h2>
+            <button id="filter-button" onclick="showFilter()" style="float:right;background-color:transparent; border-style:none; margin-top:18px;">
+                <img src="/static/filter.svg" style="height:30px;">
+            </button>
+            <div id="search-filter" class="inline-block">
+                <form method="post">
+                  <label for="gender">search for</label>
+                  <select class="form-control" id="gender" name="gender">
+                      <option value=""> </option>
+                      <option value="woman">women</option>
+                      <option value="man">men</option>
+                      <option value="">any</option>
+                  </select>
+                  <br/>
+                  <label for="max_dist">maximum distance (miles)</label>
+                  <input class="form-control" type="number" name="max_dist" id="max_dist" min="5" max="50">
+                  <input style="margin:20px 0;" class="form-control login-btn" type="submit" value="Search">
+                </form>
+            </div>
         </div>
-        <div class="col-lg-3 col-sm-2 col-xs-1"></div>
+        <div class="col-lg-3 col-sm-2 col-xs-1">
+
+        </div>
     </div>
     <br>
     {% if not search_users %}
@@ -65,6 +85,8 @@
             cur_element = document.getElementsByClassName('userInfo')[i];
             cur_element.style.display = 'none';
         }
+        var filter = document.getElementById('search-filter');
+        filter.style.display = 'none';
     };
 
     function addUserInfo(x) {
@@ -75,7 +97,14 @@
         document.getElementById(x).style.display = 'none';
     }
 
-
+    function showFilter() {
+        var filter = document.getElementById('search-filter');
+        if (filter.style.display == 'none') {
+            filter.style.display = 'block';
+        } else {
+            filter.style.display = 'none';
+        }
+    }
 
 </script>
 

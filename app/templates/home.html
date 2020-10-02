@@ -68,7 +68,11 @@
                 </div>
                 <div>
                     <h3 style="font-family:Vision-Bold">Location</h3>
-                    <p class="home-info-list">{{ city }}, {{ state }}</p>
+                    {% if not city %}
+                        <p class="home-info-list">None</p>
+                    {% else %}
+                        <p class="home-info-list">{{ city }}, {{ state }}</p>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -99,9 +103,6 @@
                           <br/>
                           <label for="pet_peeves">Dislikes</label>
                           <input class="form-control" style="margin-bottom:10px; color: #777; border-radius:10px" name="pet_peeves" id="pet_peeves" value="{{ user.pet_peeves }}">
-                          <br/>
-                          <label for="birthdate">Birthdate</label>
-                          <input class="form-control" style="margin-bottom:10px; color: #777; border-radius:10px" name="birthdate" id="birthdate" type="date">
                           <br/>
                           <label for="zip">Zip Code</label>
                           <input class="form-control" style="margin-bottom:10px; color: #777; border-radius:10px"

@@ -51,6 +51,15 @@ select option {
     margin-top: 20px;
 }
 
+.about-title {
+    font-family: Vision-Bold;
+    text-align: center;
+    color: white;
+    text-shadow: 1px 1px rgb(0, 115, 156);
+    font-size: 60px;
+    margin-bottom: 20px;
+}
+
 #nav-item-id {
     color: black;
     font-family: Vision-Bold;

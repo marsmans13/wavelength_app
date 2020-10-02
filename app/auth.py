@@ -72,7 +72,7 @@ def login():
 
         flash(error)
 
-    return render_template('login.html')
+    return render_template('login2.html')
 
 
 @auth_bp.route('/logout')

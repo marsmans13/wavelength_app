@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="js">
+<html class="js register-bg" style="min-height:100%">
 <title>{% block title %}{% endblock %} - wavelength</title>
 <head>
 <!-- Latest compiled and minified CSS -->
@@ -11,10 +11,10 @@
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
-<body style="background-color: #fff;">
+<body style="background-color: transparent; min-height:100%;">
   <div class="container-fluid bg-text">
     <div class="row">
-        <nav class="navbar navbar-light bg-light" id="navbar-cust" style="margin-bottom:0;">
+        <nav class="navbar navbar-light bg-light" id="navbar-cust" style="margin-bottom:40px;background-color:white;">
           <div class="col-lg-2 col-md-3 col-sm-3 col-xs-12" style="margin-bottom: 10px; margin-top:15px;">
             <a class="navbar-brand" href="{{ url_for('profile_bp.home') }}">
               <img src="/static/IMG_3606.JPG" alt="wavelength"
@@ -24,7 +24,6 @@
             <div class="col-sm-0 col-xs-1"></div>
             <div class="col-lg-10 col-md-9 col-sm-9 col-xs-11" id="navbarSupportedContent" style="margin-top:5px;">
               <ul class="navbar-nav mr-auto" style="padding-left: 0;">
-                {% if not session['email'] %}
                 <li class="nav-item" style="list-style: none;">
                   <a id="nav-item-id" class="nav-link" href="{{ url_for('auth_bp.register') }}">about</a>
                 </li>
@@ -34,34 +33,44 @@
                 <li class="nav-item" style="list-style: none;">
                   <a id="nav-item-id" class="nav-link" href="{{ url_for('auth_bp.login') }}">log in</a>
                 </li>
-                {% else %}
-                <li class="nav-item" style="list-style: none;">
-                  <a id="nav-item-id" class="nav-link" href="{{ url_for('profile_bp.home') }}">home</a>
-                </li>
-                <li class="nav-item" style="list-style: none;">
-                  <a id="nav-item-id" class="nav-link" href="{{ url_for('profile_bp.search_users') }}">search</a>
-                </li>
-                <li class="nav-item" style="list-style: none;">
-                  <a id="nav-item-id" class="nav-link" href="{{ url_for('profile_bp.show_matches') }}">matches</a>
-                </li>
-                <li class="nav-item" style="list-style: none;">
-                  <a id="nav-item-id" class="nav-link" href="{{ url_for('auth_bp.logout') }}">log out</a>
-                </li>
-                {% endif %}
               </ul>
             </div>
         </nav>
     </div>
   <div class="loader"></div>
-    <section class="content">
+    <section class="content" style="height: 100%; background-size: cover;">
       <header>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        {% block header %}{% endblock %}
       </header>
       {% for message in get_flashed_messages() %}
         <div class="flash">{{ message }}</div>
       {% endfor %}
-      {% block content %}{% endblock %}
+        <div class="row">
+          <div class="col-lg-8 col-md-6 col-sm-5 col-xs-0" style="height:100%">
+              <div class="row">
+                  <div class="col-lg-12 col-xs-12">
+                      <h1 class="about-title">
+                          Connect with people on your wavelength
+                      </h1>
+                  </div>
+              </div>
+          </div>
+          <div class="col-lg-4 col-md-6 col-sm-7 col-xs-12">
+            <div  class="" style="text-align:left; padding:20px; background-color: rgba(255, 255, 255, 0.6);height:100%;border: solid 2px white; border-radius:20px; margin-bottom:20px;">
+              <h2 style="font-family:Vision-Bold;">Log In</h2>
+              <form method="post">
+                  <label for="email">Email</label>
+                  <input style="width:100%" class="form-control" name="email" id="email" required>
+                  <br/>
+                  <label for="password">Password</label>
+                  <input class="form-control" type="password" name="password" id="password" required>
+                  <input style="margin:20px 0;font-family:Vision-Bold" class="form-control login-btn" type="submit" value="Log In">
+                </form>
+                <p style="font-family:Vision-Light; color: #666;">Don't have an account?</p>
+                <a href="{{ url_for('auth_bp.register') }}">Register Here</a>
+            </div>
+        </div>
+    </div>
     </section>
   </div>
   <script>
@@ -74,6 +83,7 @@
             document.querySelector("body").style.visibility = "visible";
         }
     };
-  </script>
+</script>
+
 </body>
 </html>

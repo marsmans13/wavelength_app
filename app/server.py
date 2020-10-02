@@ -62,11 +62,18 @@ def home():
         if request.form.get('birthdate'):
             print(request.form['birthdate'])
             user.birthdate = request.form['birthdate']
+        if request.form.get('gender'):
+            print(request.form['gender'])
+            user.gender = request.form['gender']
+        if request.form.get('email'):
+            print(request.form['email'])
+            user.email = request.form['email']
         db.session.add(user)
         db.session.commit()
-    if not user.zip:
-        city = 'None'
-        state = 'None'
+    print("zip", user.zip, type(user.zip))
+    if user.zip == "None":
+        city = None
+        state = None
     else:
         location_pd = get_location(user.zip)
         city = location_pd.place_name
@@ -94,16 +101,25 @@ def get_location(zip):
     return pd
 
 
-@profile_bp.route('/search_users')
+@profile_bp.route('/search_users', methods=['POST', 'GET'])
 @login_required
 def search_users():
     user = get_user(session.get('email'))
+
+    gender = None
+    distance = 5
+
+    if request.method == 'POST':
+        if request.form.get('gender'):
+            gender = request.form.get('gender')
+        if request.form.get('max_dist'):
+            distance = request.form.get('max_dist')
 
     # https://www.zipcodeapi.com/API#radius
     api_key = os.environ.get('ZIP_API_KEY')
     print(api_key)
     zip_api_url = "https://www.zipcodeapi.com/rest/{api_key}/radius.{format}/{zip_code}/{distance}/{units}?minimal".format(
-        api_key=api_key, format="json", zip_code=user.zip, distance="5", units="miles"
+        api_key=api_key, format="json", zip_code=user.zip, distance=distance, units="miles"
     )
 
     zips_nearby = [user.zip]
@@ -115,8 +131,11 @@ def search_users():
         print(f'Zip code API request failed: {e}')
 
     print("ZIPS NEARBY:", zips_nearby)
-    users_nearby = User.query.filter(User.zip.in_(zips_nearby)).filter(User.email != user.email).all()
-    print(users_nearby)
+    users_nearby = User.query.filter(User.zip.in_(zips_nearby)).filter(User.email != user.email)
+    if gender:
+        users_nearby = users_nearby.filter_by(gender=gender).all()
+    else:
+        users_nearby = users_nearby.all()
 
     passed_users = Pass.query.filter_by(passer=user.id).all()
     pass_ids = []
