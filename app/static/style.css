@@ -523,3 +523,11 @@ select option {
     padding: 0 20px 40px 20px;
     border-radius: 30px;
 }
+
+.filter-btn {
+    background-color: transparent;
+    border-style: none;
+    margin-left: 15px;
+    top: 20px;
+    position: absolute;
+}

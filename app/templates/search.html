@@ -10,7 +10,7 @@
         <div class="col-lg-3 col-sm-2 col-xs-1"></div>
         <div class="col-lg-6 col-sm-8 col-xs-10">
             <h2 class="inline-block" style="font-family:Vision-Bold;">People Near You</h2>
-            <button id="filter-button" onclick="showFilter()" style="float:right;background-color:transparent; border-style:none; margin-top:18px;">
+            <button class="filter-btn" id="filter-button" onclick="showFilter()">
                 <img src="/static/filter.svg" style="height:30px;">
             </button>
             <div id="search-filter" class="inline-block">
@@ -20,6 +20,7 @@
                       <option value=""> </option>
                       <option value="woman">women</option>
                       <option value="man">men</option>
+                      <option value="non-binary">non-binary</option>
                       <option value="">any</option>
                   </select>
                   <br/>

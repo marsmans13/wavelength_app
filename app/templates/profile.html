@@ -7,7 +7,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-2 col-xs-1"></div>
-        <div class="col-sm-8 col-xs-10">
+        <div class="col-sm-8 col-xs-10" style="margin-top:10px;">
             {% if not matched and not awaiting_match %}
             <div>
                 <div class="inline-block" style="margin-bottom:20px;">
@@ -26,16 +26,16 @@
             </div>
         {% elif awaiting_match and not matched %}
             <div class="inline-block">
-                <p>Awaiting response</p>
+                <p style="font-size:16px; margin:10px 0;">Awaiting response</p>
             </div>
         {% else %}
             <div style="margin-bottom:20px;">
-            <a class="user-list" href="{{ url_for('profile_bp.send_message', user_id=user.id) }}" style="margin-bottom:20px;">
-                Congrats, you and {{ user.username }} have matched!
-                <br/><br/>
-                <img src="/static/message.svg" alt="message icon" style="width:30px; margin:0 6px 0 0;">
-                send message
-            </a>
+                <a class="user-list" href="{{ url_for('profile_bp.send_message', user_id=user.id) }}" style="margin: 10px 0; font-size:16px;">
+                    Congrats, you and {{ user.username }} have matched!
+                    <br/><br/>
+                    <img src="/static/message.svg" alt="message icon" style="width:30px; margin:0 6px 0 0;">
+                    send message
+                </a>
             </div>
         {% endif %}
         </div>
@@ -44,7 +44,7 @@
     <div class="row">
         <div class="col-sm-2 col-xs-0"></div>
         <div class="col-sm-8 col-xs-12 list-item-box inline-block" style="margin-bottom:40px;">
-            <h1 style="text-align:left">{{ user.username }}, {{ age }}</h1>
+            <h1 style="text-align:left">{{ user.username }}</h1>
             <div class="inline-block" style="display:flex; margin-top:30px; flex-wrap:wrap; justify-content:center">
                 {% for photo in photos %}
                     <img class="inline-block cropped-img-profile" src="{{ photo }}"

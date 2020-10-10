@@ -62,12 +62,6 @@ def home():
         if request.form.get('birthdate'):
             print(request.form['birthdate'])
             user.birthdate = request.form['birthdate']
-        if request.form.get('gender'):
-            print(request.form['gender'])
-            user.gender = request.form['gender']
-        if request.form.get('email'):
-            print(request.form['email'])
-            user.email = request.form['email']
         db.session.add(user)
         db.session.commit()
     print("zip", user.zip, type(user.zip))
@@ -182,8 +176,6 @@ def user_profile(user_id):
         if request.form.get('match_user_id'):
             new_match = match_user(int(request.form['match_user_id']))
             if new_match:
-                flash("You have matched!")
-
                 ice_breaker = random.choice(ice_breakers)
                 love_bot = User.query.filter_by(id=10).first()
                 love_bot_message = Message(match_id=new_match.id, sender=love_bot.id, text=ice_breaker)

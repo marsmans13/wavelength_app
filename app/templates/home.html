@@ -44,7 +44,7 @@
                         <span id="close">&times;</span>
                         <form action="{{ url_for('profile_bp.upload_image') }}" method="post" enctype=multipart/form-data>
                           <label for="img">Add image:</label>
-                          <input type="file" id="img" name="img" accept="image/*">
+                          <input type="file" id="img" name="img" accept="image/*" required>
                           <input class="btn btn-outline-secondary" type="submit" value="Upload">
                         </form>
                     </div>
