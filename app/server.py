@@ -30,6 +30,7 @@ my_config = Config(
 ACCESS_KEY = os.environ.get('ACCESS_KEY')
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
+LOVE_BOT = 10
 
 ice_breakers = ['What is the last thing you read?', 'What is your favorite thing to read about?',
                 'Who do you look up to most?', 'Do you listen to music, and if so, what kind?',
@@ -323,8 +324,16 @@ def send_message(user_id):
         db.session.add(message)
         db.session.commit()
 
-    ice_breaker_message = Message.query.filter_by(match_id=match.id).filter_by(sender=10).first()
-    messages = Message.query.filter_by(match_id=match.id).filter(Message.sender != 10).all()
+    ice_breaker_message = Message.query.filter_by(match_id=match.id).filter_by(sender=LOVE_BOT).first()
+    messages = Message.query.filter_by(match_id=match.id).filter(Message.sender != LOVE_BOT).all()
+    print(messages[0].timestamp)
+    messages_by_date = dict()
+    for message in messages:
+        date = message.timestamp.date().strftime("%d %b %Y")
+        if messages_by_date.get(date):
+            messages_by_date[date].append(message)
+        else:
+            messages_by_date[date] = [message]
     user_photo = UserPhoto.query.filter_by(user_id=user.id).first()
     match_photo = UserPhoto.query.filter_by(user_id=profile.id).first()
 
@@ -348,7 +357,7 @@ def send_message(user_id):
     if profile.birthdate:
         age = calculate_age(profile.birthdate)
 
-    return render_template('messages.html', profile=profile, messages=messages, location=location_pd,
+    return render_template('messages.html', profile=profile, messages=messages_by_date, location=location_pd,
                            user_photo=user_photo_url, match_photo=match_photo_url, profile_photos=profile_photos,
                            age=age, ice_breaker_message=ice_breaker_message)
 
